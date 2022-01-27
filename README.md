@@ -28,9 +28,9 @@ and an automatic assignment of the comport on Windows.
 DEVELOPMENT VERSIONS
 	
 dev-V2rev1:
-	- new GUI
-	- complete rework of the backend
-	- functioning value reading module
+		- new GUI
+		- complete rework of the backend
+		- functioning value reading module
 		
 dev-V2rev2:
 	- functioning Read-Data Screen
