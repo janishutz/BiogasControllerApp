@@ -101,14 +101,11 @@
 
 
 	DEVELOPMENT:
-	
-	- Microcontroller Software: Dr. A. Cornaz
-	- BiogasControllerApp V1.0.0: S. Reichmuth
-	- BiogasControllerApp V2.x: J. Hutz
+	- BiogasControllerApp V2.x: simplePCBuilding
 	
 
 	
- COPYRIGHT 2022 J. Hutz
+ COPYRIGHT 2022 simplePCBuilding
 
 
 	
