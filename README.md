@@ -1,17 +1,13 @@
 		
-		
-		----------------------------------------------------------
 				
-				BiogasControllerApp V2.1
+			#	BiogasControllerApp V2.1
 				
-		----------------------------------------------------------
 		
 		
 	Thank you for downloading the new Version of the BiogsaControllerApp! You are greeted with 
 	lots of new features, including a new and redesigned Graphical User Interface (later "GUI")
 	and an automatic assignment of the comport on Windows. 
 	
-	----------------------------------------------------------------------------
 	
 *FEATURE LIST*
 	- Easily read out the data the Microcontroller used in ENATECH sends
@@ -26,13 +22,10 @@
 
 
 
-					_________
 					
-					CHANGELOG
-					_________
+			##		CHANGELOG
 	
 	DEVELOPMENT VERSIONS
-	.......................
 	
 	dev-V2rev1:
 		- new GUI
@@ -77,7 +70,6 @@
 		
 		
 	FULL RELEASES
-	......................
 	
 	V2:
 		- NEW GUI
@@ -92,11 +84,8 @@
 		
 		
 
-*******************************************************************************
-
-	THIS APP IS FREE TO USE FOR EVERYONE THAT HAS USE FOR IT
+	***THIS APP IS FREE TO USE FOR EVERYONE THAT HAS USE FOR IT***
 			
-*******************************************************************************
 
 
 	DEVELOPMENT:
