@@ -1,6 +1,6 @@
 		
 				
-# BiogasControllerApp V2.1
+**BiogasControllerApp V2.1**
 				
 		
 		
@@ -23,7 +23,7 @@ and an automatic assignment of the comport on Windows.
 
 
 					
-##CHANGELOG
+CHANGELOG
 	
 DEVELOPMENT VERSIONS
 	
