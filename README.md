@@ -107,10 +107,9 @@
 	- BiogasControllerApp V2.x: J. Hutz
 	
 
+	
+ COPYRIGHT 2022 J. Hutz
 
-==================================	
-=== COPYRIGHT 2022 J. Hutz  ======
-==================================
 
 	
 		
