@@ -311,6 +311,109 @@ class ReadoutScreen(Screen):
 
 
 class Program(Screen):
+    def read_config(self):
+        self.config_imp = []
+        self.__export = []
+        self.config_imp = cvr.importing("./config/config.csv")
+        self.__export = self.config_imp.pop(0)
+        self.__extracted = self.__export.pop(0)
+        if self.__extracted == "1":
+            self.ids.prsel.state = "normal"
+            self.ids.temp_s1.text = ""
+            self.ids.temp_s2.text = ""
+            self.ids.temp_s3.text = ""
+            self.ids.temp_s4.text = ""
+        else:
+            self.ids.prsel.state = "down"
+            self.read_data()
+            self.__mode = 2
+
+    def change_mode(self):
+        if self.__mode == "1":
+            self.ids.prsel.state = "down"
+            self.read_data()
+            self.__mode = 2
+        else:
+            self.ids.prsel.state = "normal"
+            self.ids.temp_s1.text = ""
+            self.ids.temp_s2.text = ""
+            self.ids.temp_s3.text = ""
+            self.ids.temp_s4.text = ""
+            self.__mode = 1
+
+    def read_data(self):
+        try:
+            com.connect(19200, "")
+            self.go = 1
+        except:
+            self.go = 0
+
+        if self.go == 1:
+            com.send("RD")
+            self.__pos = 1
+            self.__beginning = time.time()
+            self.go = 1
+            while True:
+                if time.time() - self.__beginning < 5:
+                    self.__data_recieve = com.decode_ascii(com.receive(1))
+                    if self.__data_recieve == "\n":
+                        self.__data_recieve = com.decode_ascii(com.receive(1))
+                        if self.__data_recieve == "R":
+                            self.__data_recieve = com.decode_ascii(com.receive(1))
+                            if self.__data_recieve == "D":
+                                self.__data_recieve = com.decode_ascii(com.receive(1))
+                                if self.__data_recieve == "\n":
+                                    self.go = 1
+                                    break
+                                else:
+                                    pass
+                            else:
+                                pass
+                        else:
+                            pass
+                    else:
+                        pass
+                else:
+                    self.go = 0
+                    break
+            if self.go == 1:
+                for i in range(4):
+                    self.__x = com.receive(28)
+                    self.__a = str(com.decode_float(self.__x[0:6]))
+                    self.__b += str(com.decode_float(self.__x[7:13]))
+                    self.__c += str(com.decode_float(self.__x[14:20]))
+                    self.__temp += str(com.decode_float(self.__x[21:27]))
+                    if self.__pos == 1:
+                        self.ids.s1_a.text = self.__a
+                        self.ids.s1_b.text = self.__b
+                        self.ids.s1_c.text = self.__c
+                        self.ids.s1_t.text = self.__temp
+                    elif self.__pos == 2:
+                        self.ids.s2_a.text = self.__a
+                        self.ids.s2_b.text = self.__b
+                        self.ids.s2_c.text = self.__c
+                        self.ids.s2_t.text = self.__temp
+                    elif self.__pos == 3:
+                        self.ids.s3_a.text = self.__a
+                        self.ids.s3_b.text = self.__b
+                        self.ids.s3_c.text = self.__c
+                        self.ids.s3_t.text = self.__temp
+                    elif self.__pos == 4:
+                        self.ids.s4_a.text = self.__a
+                        self.ids.s4_b.text = self.__b
+                        self.ids.s4_c.text = self.__c
+                        self.ids.s4_t.text = self.__temp
+                    self.__pos += 1
+            else:
+                self.open_comfail_pu()
+            com.quitcom()
+        else:
+            self.open_comfail_pu()
+
+    def open_comfail_pu(self):
+        self.cfpu = ConnectionFail()
+        self.cfpu.open()
+
     def create_com(self):
         self.coms = bin.lib.communication.Communication()
 
@@ -388,21 +491,88 @@ class ProgramTemp(Screen):
         self.__extracted = self.__export.pop(0)
         if self.__extracted == "1":
             self.ids.prsel.state = "normal"
-            self.__mode = 1
+            self.ids.temp_s1.text = ""
+            self.ids.temp_s2.text = ""
+            self.ids.temp_s3.text = ""
+            self.ids.temp_s4.text = ""
         else:
             self.ids.prsel.state = "down"
+            self.read_data()
             self.__mode = 2
-
-    def create_com(self):
-        self.coms = bin.lib.communication.Communication()
 
     def change_mode(self):
         if self.__mode == "1":
             self.ids.prsel.state = "down"
+            self.read_data()
             self.__mode = 2
         else:
             self.ids.prsel.state = "normal"
+            self.ids.temp_s1.text = ""
+            self.ids.temp_s2.text = ""
+            self.ids.temp_s3.text = ""
+            self.ids.temp_s4.text = ""
             self.__mode = 1
+
+    def read_data(self):
+        try:
+            com.connect(19200, "")
+            self.go = 1
+        except:
+            self.go = 0
+
+        if self.go == 1:
+            com.send("RD")
+            self.__pos = 1
+            self.__beginning = time.time()
+            self.go = 1
+            while True:
+                if time.time() - self.__beginning < 5:
+                    self.__data_recieve = com.decode_ascii(com.receive(1))
+                    if self.__data_recieve == "\n":
+                        self.__data_recieve = com.decode_ascii(com.receive(1))
+                        if self.__data_recieve == "R":
+                            self.__data_recieve = com.decode_ascii(com.receive(1))
+                            if self.__data_recieve == "D":
+                                self.__data_recieve = com.decode_ascii(com.receive(1))
+                                if self.__data_recieve == "\n":
+                                    self.go = 1
+                                    break
+                                else:
+                                    pass
+                            else:
+                                pass
+                        else:
+                            pass
+                    else:
+                        pass
+                else:
+                    self.go = 0
+                    break
+            if self.go == 1:
+                for i in range(4):
+                    self.__x = com.receive(28)
+                    self.__output = str(com.decode_float(self.__x[21:27]))
+                    if self.__pos == 1:
+                        self.ids.temp_s1.text = self.__output
+                    elif self.__pos == 2:
+                        self.ids.temp_s2.text = self.__output
+                    elif self.__pos == 3:
+                        self.ids.temp_s3.text = self.__output
+                    elif self.__pos == 4:
+                        self.ids.temp_s4.text = self.__output
+                    self.__pos += 1
+            else:
+                self.open_comfail_pu()
+            com.quitcom()
+        else:
+            self.open_comfail_pu()
+
+    def open_comfail_pu(self):
+        self.cfpu = ConnectionFail()
+        self.cfpu.open()
+
+    def create_com(self):
+        self.coms = bin.lib.communication.Communication()
 
     def send_data(self):
         try:
