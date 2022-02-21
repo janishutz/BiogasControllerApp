@@ -5,12 +5,13 @@ print("""
 BIOGASCONTROLLERAPP
 
 ----------
-Version 2.1
+Version 2.2
 Copyright 2022 J.Hutz""")
 import time
 import threading
 import platform
 import os
+import webbrowser
 os.environ["KIVY_NO_CONSOLELOG"] = "1"
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.popup import Popup
@@ -20,10 +21,10 @@ from kivy.clock import mainthread
 import bin.lib.lib
 import bin.lib.communication
 import bin.lib.comport_search
+import bin.lib.csv_parsers
 
-
-
-
+cvr = bin.lib.csv_parsers.CsvRead()
+cvw = bin.lib.csv_parsers.CsvWrite()
 com = bin.lib.lib.Com()
 
 ##################################################################
@@ -339,24 +340,27 @@ class Program(Screen):
                 self.__transmit.append(self.ids.s4_b.text)
                 self.__transmit.append(self.ids.s4_c.text)
                 self.__transmit.append(self.ids.s4_t.text)
-                self.coms.change_all(self.__transmit,"")
-                self.ids.s1_a.text = ""
-                self.ids.s1_b.text = ""
-                self.ids.s1_c.text = ""
-                self.ids.s1_t.text = ""
-                self.ids.s2_a.text = ""
-                self.ids.s2_b.text = ""
-                self.ids.s2_c.text = ""
-                self.ids.s2_t.text = ""
-                self.ids.s3_a.text = ""
-                self.ids.s3_b.text = ""
-                self.ids.s3_c.text = ""
-                self.ids.s3_t.text = ""
-                self.ids.s4_a.text = ""
-                self.ids.s4_b.text = ""
-                self.ids.s4_c.text = ""
-                self.ids.s4_t.text = ""
-                self.openconfpu()
+                try:
+                    self.coms.change_all(self.__transmit, "")
+                    self.ids.s1_a.text = ""
+                    self.ids.s1_b.text = ""
+                    self.ids.s1_c.text = ""
+                    self.ids.s1_t.text = ""
+                    self.ids.s2_a.text = ""
+                    self.ids.s2_b.text = ""
+                    self.ids.s2_c.text = ""
+                    self.ids.s2_t.text = ""
+                    self.ids.s3_a.text = ""
+                    self.ids.s3_b.text = ""
+                    self.ids.s3_c.text = ""
+                    self.ids.s3_t.text = ""
+                    self.ids.s4_a.text = ""
+                    self.ids.s4_b.text = ""
+                    self.ids.s4_c.text = ""
+                    self.ids.s4_t.text = ""
+                    self.openconfpu()
+                except:
+                    self.open_confail_pu()
             else:
                 self.openerrorpu()
         else:
@@ -376,8 +380,29 @@ class Program(Screen):
 
 
 class ProgramTemp(Screen):
+    def read_config(self):
+        self.config_imp = []
+        self.__export = []
+        self.config_imp = cvr.importing("./config/config.csv")
+        self.__export = self.config_imp.pop(0)
+        self.__extracted = self.__export.pop(0)
+        if self.__extracted == "1":
+            self.ids.prsel.state = "normal"
+            self.__mode = 1
+        else:
+            self.ids.prsel.state = "down"
+            self.__mode = 2
+
     def create_com(self):
         self.coms = bin.lib.communication.Communication()
+
+    def change_mode(self):
+        if self.__mode == "1":
+            self.ids.prsel.state = "down"
+            self.__mode = 2
+        else:
+            self.ids.prsel.state = "normal"
+            self.__mode = 1
 
     def send_data(self):
         try:
@@ -483,6 +508,32 @@ class ReadData(Screen):
 
 class Credits(Screen):
     pass
+
+
+class Modify(Screen):
+    def read_config(self):
+        self.config_imp = []
+        self.__export = []
+        self.config_imp = cvr.importing("./config/config.csv")
+        self.__export = self.config_imp.pop(0)
+        self.__extracted = self.__export.pop(0)
+        if self.__extracted == "1":
+            self.ids.prsel.state = "normal"
+        else:
+            self.ids.prsel.state = "down"
+
+    def issue_reporting(self):
+        webbrowser.open("https://github.com/simplePCBuilding/BiogasControllerApp/issues", new=2)
+
+    def change_programming(self):
+        self.csv_import = []
+        self.csv_import = cvr.importing("./config/config.csv")
+        self.csv_import.pop(0)
+        if self.ids.prsel.text == "Easy\nreprogramming":
+            self.csv_import.insert(0, 1)
+        else:
+            self.csv_import.insert(0, 2)
+        cvw.write_str("./config/config.csv", self.csv_import)
 
 
 ########################################################

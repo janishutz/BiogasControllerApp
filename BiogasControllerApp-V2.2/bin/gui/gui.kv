@@ -5,6 +5,7 @@ RootScreen:
     ProgramTemp:
     Program:
     Credits:
+    Modify:
 
 <QuitPU>:
     title: "BiogasControllerApp"
@@ -214,18 +215,18 @@ RootScreen:
                     on_release:
                         root.exitapp()
             Label:
-                text: "You are currently running Version 2.1.0 - If you encounter a bug, please report it!"
+                text: "You are currently running Version 2.2.0 - If you encounter a bug, please report it!"
                 font_size: 13
                 pos_hint: {"y": -0.45, "x":0.05}
             Button:
-                text: "credits"
+                text: "Settings"
                 font_size: 13
                 size_hint: 0.07, 0.06
                 pos_hint: {"x":0.01, "y":0.01}
                 background_color: (50, 0, 0, 0.2)
                 on_release:
-                    app.root.current = "Credits"
-                    root.manager.transition.direction = "left"
+                    app.root.current = "Settings"
+                    root.manager.transition.direction = "down"
 
 <ReadoutScreen>:
     on_pre_enter: self.reset_screen = root.resscreen()
@@ -249,25 +250,25 @@ RootScreen:
             size_hint: 0.8, 0.3
             pos_hint: {"x":0.1, "y":0.4}
             Label:
-                text: "SONDE 1: "
+                text: "SENSOR 1: "
                 font_size: 20
             Label:
                 id: sonde1
                 text: ""
             Label:
-                text: "SONDE 2: "
+                text: "SENSOR 2: "
                 font_size: 20
             Label:
                 id: sonde2
                 text: ""
             Label:
-                text: "SONDE 3: "
+                text: "SENSOR 3: "
                 font_size: 20
             Label:
                 id: sonde3
                 text: ""
             Label:
-                text: "SONDE 4: "
+                text: "SENSOR 4: "
                 font_size: 20
             Label:
                 id: sonde4
@@ -415,25 +416,25 @@ RootScreen:
             pos_hint: {"x": 0.1, "y":0.3}
             cols:2
             Label:
-                text: "Temperatur Sonde 1: "
+                text: "Temperature Sensor 1: "
             TextInput:
                 id: temp_s1
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Temperatur Sonde 2: "
+                text: "Temperature Sensor 2: "
             TextInput:
                 id: temp_s2
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Temperatur Sonde 3: "
+                text: "Temperature Sensor 3: "
             TextInput:
                 id: temp_s3
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Temperatur Sonde 4: "
+                text: "Temperature Sensor 4: "
             TextInput:
                 id: temp_s4
                 multiline: False
@@ -474,97 +475,97 @@ RootScreen:
             pos_hint: {"x":0.1, "y":0.2}
             cols: 4
             Label:
-                text: "Sonde 1, a:"
+                text: "Sensor 1, a:"
             TextInput:
                 id: s1_a
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 1, b:"
+                text: "Sensor 1, b:"
             TextInput:
                 id: s1_b
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 1, c:"
+                text: "Sensor 1, c:"
             TextInput:
                 id: s1_c
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 1, Temp:"
+                text: "Sensor 1, Temp:"
             TextInput:
                 id: s1_t
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 2, a:"
+                text: "Sensor 2, a:"
             TextInput:
                 id: s2_a
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 2, b:"
+                text: "Sensor 2, b:"
             TextInput:
                 id: s2_b
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 2, c:"
+                text: "Sensor 2, c:"
             TextInput:
                 id: s2_c
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 2, Temp:"
+                text: "Sensor 2, Temp:"
             TextInput:
                 id: s2_t
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 3, a:"
+                text: "Sensor 3, a:"
             TextInput:
                 id: s3_a
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 3, b:"
+                text: "Sensor 3, b:"
             TextInput:
                 id: s3_b
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 3, c:"
+                text: "Sensor 3, c:"
             TextInput:
                 id: s3_c
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 3, Temp:"
+                text: "Sensor 3, Temp:"
             TextInput:
                 id: s3_t
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 4, a:"
+                text: "Sensor 4, a:"
             TextInput:
                 id: s4_a
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 4, b:"
+                text: "Sensor 4, b:"
             TextInput:
                 id: s4_b
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 4, c:"
+                text: "Sensor 4, c:"
             TextInput:
                 id: s4_c
                 multiline: False
                 input_filter: "float"
             Label:
-                text: "Sonde 4, Temp:"
+                text: "Sensor 4, Temp:"
             TextInput:
                 id: s4_t
                 multiline: False
@@ -599,7 +600,7 @@ RootScreen:
             size_hint: 0.4, 0.2
             pos_hint: {"x":0.3, "y":0.1}
             on_release:
-                app.root.current = "Home"
+                app.root.current = "Settings"
                 root.manager.transition.direction = "right"
         GridLayout:
             cols:1
@@ -609,3 +610,47 @@ RootScreen:
                 text: "This is a rework of the BiogasControllerApp V1, that was originally programmed by S. Reichmuth."
             Label:
                 text: "Written by:                   Janis Hutz\nDesigned by:                Janis Hutz\nDesign language:          Kivy"
+
+<Modify>:
+    on_pre_enter: self.config = root.read_config()
+    name: "Settings"
+    canvas.before:
+        Color:
+            rgba: (50,50,50,0.2)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    GridLayout:
+        cols: 1
+        Label:
+            text: "Settings"
+            font_size: 40
+            color: (0, 113, 0, 1)
+            bold: True
+        FloatLayout:
+            GridLayout:
+                pos_hint: {"x":0.05, "y":0.05}
+                size_hint: 0.9, 0.9
+                cols: 4
+                Button:
+                    text: "Back"
+                    background_color: (255,0,0,0.6)
+                    on_release:
+                        app.root.current = "Home"
+                        root.manager.transition.direction = "up"
+                Button:
+                    text: "Report a\nBug"
+                    background_color: (255,0,0,0.6)
+                    on_release:
+                        root.issue_reporting()
+                ToggleButton:
+                    id: prsel
+                    text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
+                    on_text: root.change_programming()
+                    background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
+                Button:
+                    text: "Credits"
+                    background_color: (255,0,0,0.6)
+                    on_release:
+                        app.root.current = "Credits"
+                        root.manager.transition.direction = "left"
