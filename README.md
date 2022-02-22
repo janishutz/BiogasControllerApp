@@ -4,7 +4,7 @@
 				
 		
 		
-Thank you for downloading the new Version of the BiogsaControllerApp! You are greeted with 
+Thank you for downloading the new Version of the BiogasControllerApp! You are greeted with 
 lots of new features, including a new and redesigned Graphical User Interface (later "GUI")
 and an automatic assignment of the comport on Windows. 
 	
