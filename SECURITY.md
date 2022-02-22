@@ -6,8 +6,9 @@ Currently only the newest versions get security updates as security updates are 
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.1.0   | :white_check_makr: |
-| 1.0.0   | :x:                |
+| 2.2.0   | 🟡                 |
+| 2.1.0   | ✅                 |
+| 1.0.0   | ❎                 |
 
 ## Reporting a Vulnerability
 
