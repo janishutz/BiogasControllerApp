@@ -39,8 +39,26 @@ dev-v2.1rev4:
 		
 V2.1-Rc1:
 - small Bugfixes
-	
-		
+
+
+dev-V2.2rev1:
+- fixed a bug, where the app would crash if an error occured during transmitting of the values changed in the program screen
+
+dev-V2.2rev2:
+- added a new settings-screen that allows changing a setting, reporting bugs and also the credits screen has been moved into that screen.
+
+dev-V2.2rev3:
+- added support for only changing one value in the program screen at one point
+
+dev-V2.2rev4: 
+- added backend support for momentarily disable the feature newly added in the previous dev-version
+
+dev-V2.2rev5: (upcoming)
+- add buttons for the feature of dev-V2.2rev4
+
+V2.2-Rc1: (upcoming)
+- fix possibly occuring bug, testing version
+
 		
 FULL RELEASES
 	
@@ -53,4 +71,10 @@ V2.1
 - DETAILED Error-Info
 - DETAILED Error-Resolving-Tips
 - MORE RELIABLE Comport handling
+- BUGFIXES
+
+V2.2 (Upcoming)
+- ALLOWS for easier configuration changing
+- ADDS a Settings screen
+- ADDS easier bug-reporting
 - BUGFIXES
