@@ -15,6 +15,7 @@ and an automatic assignment of the comport on Windows.
 - Easily change the temperature that is set for the controller to heat to
 - Easy to navigate menus and submenus for better organisation
 - (Almost) Bugfree
+- The app is still maintained and as such known issues will be resolved
 - Highly detailed error resolving instructions directly inside of the app
 - Easy to run: No extra Software required (e.g. Python or similar)
 - Easy to install and uninstall as it has an installer and uninstaller
