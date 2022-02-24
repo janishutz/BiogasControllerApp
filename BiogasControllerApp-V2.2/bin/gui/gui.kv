@@ -396,6 +396,7 @@ RootScreen:
                 text: ""
 
 <ProgramTemp>:
+    on_pre_enter: self.check_config = root.read_config()
     name: "PT"
     canvas.before:
         Color:
@@ -441,12 +442,19 @@ RootScreen:
                 input_filter: "float"
         Button:
             text: "Back"
-            size_hint: 0.2, 0.1
+            size_hint: 0.1, 0.1
             pos_hint: {"x":0.1, "y":0.1}
             background_color: (255, 0, 0, 0.6)
             on_release:
                 app.root.current = "Readout"
                 root.manager.transition.direction = "up"
+        ToggleButton:
+            id: prsel
+            size_hint: 0.2, 0.1
+            pos_hint: {"x":0.35, "y": 0.1}
+            text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
+            on_release: root.change_mode()
+            background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
         Button:
             text: "Save"
             size_hint: 0.2, 0.1
@@ -457,6 +465,7 @@ RootScreen:
 
 <Program>:
     name: "PR"
+    on_pre_enter: self.check_config = root.read_config()
     canvas.before:
         Color:
             rgba: (50,50,50,0.2)
@@ -572,12 +581,19 @@ RootScreen:
                 input_filter: "float"
         Button:
             text: "Back"
-            size_hint: 0.2, 0.1
+            size_hint: 0.1, 0.1
             pos_hint: {"x":0.1, "y":0.1}
             background_color: (255, 0, 0, 0.6)
             on_release:
                 app.root.current = "Readout"
                 root.manager.transition.direction = "up"
+        ToggleButton:
+            id: prsel
+            size_hint: 0.2, 0.1
+            pos_hint: {"x":0.35, "y": 0.1}
+            text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
+            on_release: root.change_mode()
+            background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
         Button:
             text: "Save"
             size_hint: 0.2, 0.1
@@ -585,6 +601,7 @@ RootScreen:
             background_color: (255, 0, 0, 0.6)
             on_release:
                 root.send_data()
+
 
 <Credits>:
     name: "Credits"
@@ -646,7 +663,7 @@ RootScreen:
                 ToggleButton:
                     id: prsel
                     text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
-                    on_text: root.change_programming()
+                    on_release: root.change_programming()
                     background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
                 Button:
                     text: "Credits"

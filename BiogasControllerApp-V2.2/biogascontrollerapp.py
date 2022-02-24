@@ -319,10 +319,23 @@ class Program(Screen):
         self.__extracted = self.__export.pop(0)
         if self.__extracted == "1":
             self.ids.prsel.state = "normal"
-            self.ids.temp_s1.text = ""
-            self.ids.temp_s2.text = ""
-            self.ids.temp_s3.text = ""
-            self.ids.temp_s4.text = ""
+            self.ids.s1_a.text = ""
+            self.ids.s1_b.text = ""
+            self.ids.s1_c.text = ""
+            self.ids.s1_t.text = ""
+            self.ids.s2_a.text = ""
+            self.ids.s2_b.text = ""
+            self.ids.s2_c.text = ""
+            self.ids.s2_t.text = ""
+            self.ids.s3_a.text = ""
+            self.ids.s3_b.text = ""
+            self.ids.s3_c.text = ""
+            self.ids.s3_t.text = ""
+            self.ids.s4_a.text = ""
+            self.ids.s4_b.text = ""
+            self.ids.s4_c.text = ""
+            self.ids.s4_t.text = ""
+            self.__mode = 1
         else:
             self.ids.prsel.state = "down"
             self.read_data()
@@ -330,15 +343,25 @@ class Program(Screen):
 
     def change_mode(self):
         if self.__mode == "1":
-            self.ids.prsel.state = "down"
             self.read_data()
             self.__mode = 2
         else:
-            self.ids.prsel.state = "normal"
-            self.ids.temp_s1.text = ""
-            self.ids.temp_s2.text = ""
-            self.ids.temp_s3.text = ""
-            self.ids.temp_s4.text = ""
+            self.ids.s1_a.text = ""
+            self.ids.s1_b.text = ""
+            self.ids.s1_c.text = ""
+            self.ids.s1_t.text = ""
+            self.ids.s2_a.text = ""
+            self.ids.s2_b.text = ""
+            self.ids.s2_c.text = ""
+            self.ids.s2_t.text = ""
+            self.ids.s3_a.text = ""
+            self.ids.s3_b.text = ""
+            self.ids.s3_c.text = ""
+            self.ids.s3_t.text = ""
+            self.ids.s4_a.text = ""
+            self.ids.s4_b.text = ""
+            self.ids.s4_c.text = ""
+            self.ids.s4_t.text = ""
             self.__mode = 1
 
     def read_data(self):
@@ -405,14 +428,10 @@ class Program(Screen):
                         self.ids.s4_t.text = self.__temp
                     self.__pos += 1
             else:
-                self.open_comfail_pu()
+                self.open_confail_pu()
             com.quitcom()
         else:
-            self.open_comfail_pu()
-
-    def open_comfail_pu(self):
-        self.cfpu = ConnectionFail()
-        self.cfpu.open()
+            self.open_confail_pu()
 
     def create_com(self):
         self.coms = bin.lib.communication.Communication()
@@ -495,6 +514,7 @@ class ProgramTemp(Screen):
             self.ids.temp_s2.text = ""
             self.ids.temp_s3.text = ""
             self.ids.temp_s4.text = ""
+            self.__mode = 1
         else:
             self.ids.prsel.state = "down"
             self.read_data()
@@ -502,11 +522,9 @@ class ProgramTemp(Screen):
 
     def change_mode(self):
         if self.__mode == "1":
-            self.ids.prsel.state = "down"
             self.read_data()
             self.__mode = 2
         else:
-            self.ids.prsel.state = "normal"
             self.ids.temp_s1.text = ""
             self.ids.temp_s2.text = ""
             self.ids.temp_s3.text = ""
@@ -562,14 +580,10 @@ class ProgramTemp(Screen):
                         self.ids.temp_s4.text = self.__output
                     self.__pos += 1
             else:
-                self.open_comfail_pu()
+                self.open_confail_pu()
             com.quitcom()
         else:
-            self.open_comfail_pu()
-
-    def open_comfail_pu(self):
-        self.cfpu = ConnectionFail()
-        self.cfpu.open()
+            self.open_confail_pu()
 
     def create_com(self):
         self.coms = bin.lib.communication.Communication()
