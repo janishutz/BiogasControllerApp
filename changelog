@@ -53,11 +53,11 @@ dev-V2.2rev3:
 dev-V2.2rev4: 
 - added backend support for momentarily disable the feature newly added in the previous dev-version
 
-dev-V2.2rev5: (upcoming)
+dev-V2.2rev5: 
 - add buttons for the feature of dev-V2.2rev4
 
-V2.2-Rc1: (upcoming)
-- fix possibly occuring bug, testing version
+V2.2-Rc1:
+- fixed a bug that could cause the app not to show any error when using the new feature.
 
 		
 FULL RELEASES
