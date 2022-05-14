@@ -1,11 +1,21 @@
 import os
-os.environ["KIVY_NO_CONSOLELOG"] = "1"
+import configparser
 
-import time
+import serial
+
+config = configparser.ConfigParser()
+config.read('./config/settings.ini')
+co = config['Dev Settings']['verbose']
+if co == "True":
+    pass
+else:
+    os.environ["KIVY_NO_CONSOLELOG"] = "1"
+
 import threading
 import platform
 import webbrowser
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.core.window import Window
 from kivy.uix.popup import Popup
 from kivy.app import App
 from kivy.lang import Builder
@@ -15,10 +25,10 @@ import bin.lib.communication
 import bin.lib.comport_search
 import bin.lib.csv_parsers
 import logging
-import configparser
 import datetime
 import time
 
+version_app = f"{config['Info']['version']}{config['Info']['subVersion']}"
 
 ################################################################
 # LOGGER SETUP
@@ -31,13 +41,34 @@ formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(name)s: %(message
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-logger.setLevel(logging.DEBUG)
-logger.info("Logger initialized")
+logger.setLevel(config['Dev Settings']['log_level'])
+logger.info(f"Logger initialized, app is running Version: {version_app}")
 #################################################################
+
 
 cvr = bin.lib.csv_parsers.CsvRead()
 cvw = bin.lib.csv_parsers.CsvWrite()
 com = bin.lib.lib.Com()
+
+
+#################################################################
+# Settings Handler
+#########################
+class SettingsHandler:
+    def __init__(self):
+        self.ports = None
+        self.window_sizeh = 600
+        self.window_sizew = 800
+
+    def settingshandler(self):
+        self.ports = config['Port Settings']['specificPort']
+        self.window_sizeh = config['UI Config']['sizeH']
+        self.window_sizew = config['UI Config']['sizeW']
+        Window.size = (int(self.window_sizew), int(self.window_sizeh))
+
+
+#################################################################
+
 
 logger.info("Started modules")
 
@@ -133,15 +164,19 @@ class SaveConf(Popup):
 ####################################################################
 # SCREENS
 ####################################################################
-
 class HomeScreen(Screen):
-    connected = 1
-    try:
-        com.connect(19200, "")
-        com.quitcom()
-    except Exception as e:
-        connected = 0
-        logger.error(e)
+    def reset(self):
+        logger.info("HomeScreen initialised")
+        SettingsHandler().settingshandler()
+        self.connected = 1
+        self.info = f"You are currently running Version {version_app} - If you encounter a bug, please report it!"
+        try:
+            com.connect(19200, "")
+            com.quitcom()
+        except Exception as e:
+            self.connected = 0
+            logger.error(e)
+        return self.info
 
     def tryconnection(self):
         try:
@@ -151,9 +186,14 @@ class HomeScreen(Screen):
             self.manager.current = "Readout"
             self.manager.transition.direction = "right"
         except Exception as ex:
-            self.connected = 0
-            logger.error(f"COM_error: {ex}")
-            self.open_popup()
+            if config['Dev Settings']['disableConnectionCheck'] == "True":
+                self.connected = 1
+                self.manager.current = "Readout"
+                self.manager.transition.direction = "right"
+            else:
+                self.connected = 0
+                logger.error(f"COM_error: {ex}")
+                self.open_popup()
 
     def open_popup(self):
         self.popups = NoConnection()
@@ -280,20 +320,28 @@ class ReadoutScreen(Screen):
         try:
             self.communication.join()
             com.quitcom()
+            self.com_ok = 1
             logger.info("Mode_Switch successful")
         except Exception as e:
-            if e == AttributeError:
+            if e == serial.SerialException:
                 logger.info("No running process found, continuing")
             else:
                 logger.fatal(f"FATAL ERROR OCCURED, APP WILL LEAVE NOW: {e}")
-        if text == "Normal Mode":
-            bin.lib.communication.SwitchMode().disable_fastmode()
+            self.com_ok = 0
+
+        if self.com_ok == 1:
+            if text == "Normal Mode":
+                bin.lib.communication.SwitchMode().disable_fastmode()
+            else:
+                bin.lib.communication.SwitchMode().enable_fastmode()
+            logger.info("Switched mode, restarting COM")
+            self.openpupups()
+            self.comstart(0)
+            logger.info("COM restarted successfully")
         else:
-            bin.lib.communication.SwitchMode().enable_fastmode()
-        logger.info("Switched mode, restarting COM")
-        self.openpupups()
-        self.comstart(0)
-        logger.info("COM restarted successfully")
+            self.check = 1
+            self.ids.mode_sel.state = "normal"
+            self.openconnectionfailpu()
 
     @mainthread
     def change_screen(self, pos, value):
@@ -335,6 +383,7 @@ class ReadoutScreen(Screen):
         self.stopcom(0)
 
     def resscreen(self):
+        logger.info("Screen reset")
         self.ids.sonde1.text = ""
         self.ids.sonde2.text = ""
         self.ids.sonde3.text = ""
@@ -804,13 +853,11 @@ class RootScreen(ScreenManager):
     pass
 
 
-kv = Builder.load_file("./bin/gui/gui.kv")
-logger.info("Loaded GUI")
-
 class BiogasControllerApp(App):
     def build(self):
         self.icon = "./BiogasControllerAppLogo.png"
-        return kv
+        self.title = "BiogasControllerApp"
+        return Builder.load_file("./bin/gui/gui.kv")
 
 
 logger.info("Init finished, starting UI")

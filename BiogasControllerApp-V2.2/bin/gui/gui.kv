@@ -180,9 +180,8 @@ RootScreen:
 ######################################
 # SCREENS
 ######################################
-
 <HomeScreen>:
-    name: "Home"
+    name: "HomeS"
     canvas.before:
         Color:
             rgba: (50,50,50,0.2)
@@ -215,7 +214,8 @@ RootScreen:
                     on_release:
                         root.exitapp()
             Label:
-                text: "You are currently running Version 2.3.0 - If you encounter a bug, please report it!"
+                text: root.reset()
+                id: app_version
                 font_size: 13
                 pos_hint: {"y": -0.45, "x":0.05}
             Button:
@@ -294,7 +294,7 @@ RootScreen:
             background_color: (255, 0, 0, 0.6)
             on_release:
                 root.leave_screen()
-                app.root.current = "Home"
+                app.root.current = "HomeS"
                 root.manager.transition.direction = "left"
         ToggleButton:
             id: mode_sel
@@ -652,7 +652,7 @@ RootScreen:
                     text: "Back"
                     background_color: (255,0,0,0.6)
                     on_release:
-                        app.root.current = "Home"
+                        app.root.current = "HomeS"
                         root.manager.transition.direction = "up"
                 Button:
                     text: "Report a\nBug"
