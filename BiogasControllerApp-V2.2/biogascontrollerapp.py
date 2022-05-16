@@ -497,9 +497,9 @@ class Program(Screen):
                 for i in range(4):
                     self.__x = com.receive(28)
                     self.__a = str(com.decode_float(self.__x[0:6]))
-                    self.__b += str(com.decode_float(self.__x[7:13]))
-                    self.__c += str(com.decode_float(self.__x[14:20]))
-                    self.__temp += str(com.decode_float(self.__x[21:27]))
+                    self.__b = str(com.decode_float(self.__x[7:13]))
+                    self.__c = str(com.decode_float(self.__x[14:20]))
+                    self.__temp = str(com.decode_float(self.__x[21:27]))
                     if self.__pos == 1:
                         self.ids.s1_a.text = self.__a
                         self.ids.s1_b.text = self.__b
@@ -846,7 +846,7 @@ class Modify(Screen):
             self.csv_import.insert(0, 1)
         else:
             self.csv_import.insert(0, 2)
-        logger.debug("Mode now:", self.csv_import)
+        logger.debug(f"Mode now: {self.csv_import}")
         cvw.write_str("./config/config.csv", self.csv_import)
 
 
