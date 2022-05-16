@@ -1,6 +1,6 @@
 		
 				
-**BiogasControllerApp V2.2**
+**BiogasControllerApp V2.3**
 				
 		
 		
@@ -20,6 +20,7 @@ and an automatic assignment of the comport on all supported Operating systems (s
 - Highly detailed error resolving instructions directly inside of the app
 - Easy to run: No extra Software required (e.g. Python or similar)
 - Easy to install and uninstall as it has an installer and uninstaller
+- Some settings are available through the /config/settings.ini file
 	
 	
 
