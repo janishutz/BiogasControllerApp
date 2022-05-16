@@ -180,9 +180,8 @@ RootScreen:
 ######################################
 # SCREENS
 ######################################
-
 <HomeScreen>:
-    name: "Home"
+    name: "HomeS"
     canvas.before:
         Color:
             rgba: (50,50,50,0.2)
@@ -215,7 +214,8 @@ RootScreen:
                     on_release:
                         root.exitapp()
             Label:
-                text: "You are currently running Version 2.2.0 - If you encounter a bug, please report it!"
+                text: root.reset()
+                id: app_version
                 font_size: 13
                 pos_hint: {"y": -0.45, "x":0.05}
             Button:
@@ -294,7 +294,7 @@ RootScreen:
             background_color: (255, 0, 0, 0.6)
             on_release:
                 root.leave_screen()
-                app.root.current = "Home"
+                app.root.current = "HomeS"
                 root.manager.transition.direction = "left"
         ToggleButton:
             id: mode_sel
@@ -404,7 +404,6 @@ RootScreen:
         Rectangle:
             size: self.size
             pos: self.pos
-    GridLayout:
     FloatLayout:
         Label:
             text: "Change Temperature"
@@ -452,7 +451,7 @@ RootScreen:
             id: prsel
             size_hint: 0.2, 0.1
             pos_hint: {"x":0.35, "y": 0.1}
-            text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
+            text: "Full\nreprogramming" if self.state == "normal" else "Partial\nreprogramming"
             on_release: root.change_mode()
             background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
         Button:
@@ -591,7 +590,7 @@ RootScreen:
             id: prsel
             size_hint: 0.2, 0.1
             pos_hint: {"x":0.35, "y": 0.1}
-            text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
+            text: "Full\nreprogramming" if self.state == "normal" else "Partial\nreprogramming"
             on_release: root.change_mode()
             background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
         Button:
@@ -626,7 +625,7 @@ RootScreen:
             Label:
                 text: "This is a rework of the BiogasControllerApp V1, that was originally programmed by S. Reichmuth."
             Label:
-                text: "Written by:                   Janis Hutz\nDesigned by:                Janis Hutz\nDesign language:          Kivy"
+                text: "Written by:                   Janis Hutz\nDesigned by:                Janis Hutz\nDesign language:         Kivy"
 
 <Modify>:
     on_pre_enter: self.config = root.read_config()
@@ -653,7 +652,7 @@ RootScreen:
                     text: "Back"
                     background_color: (255,0,0,0.6)
                     on_release:
-                        app.root.current = "Home"
+                        app.root.current = "HomeS"
                         root.manager.transition.direction = "up"
                 Button:
                     text: "Report a\nBug"
@@ -662,7 +661,7 @@ RootScreen:
                         root.issue_reporting()
                 ToggleButton:
                     id: prsel
-                    text: "Easy\nreprogramming" if self.state == "normal" else "Advanced\nreprogramming"
+                    text: "Full\nreprogramming" if self.state == "normal" else "Partial\nreprogramming"
                     on_release: root.change_programming()
                     background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
                 Button:
