@@ -45,7 +45,11 @@ logger.setLevel(config['Dev Settings']['log_level'])
 logger.info(f"Logger initialized, app is running Version: {version_app}")
 #################################################################
 
-
+if config['Port Settings']['specificPort'] == "None" or "\"\"":
+    special_port = ""
+else:
+    special_port = config['Port Settings']['specificPort']
+print(type(special_port))
 cvr = bin.lib.csv_parsers.CsvRead()
 cvw = bin.lib.csv_parsers.CsvWrite()
 com = bin.lib.lib.Com()
@@ -95,7 +99,7 @@ class DetailInfo(Popup):
     def infos(self):
         self.err = ""
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             com.quitcom()
         except Exception as err:
             self.err += "Errormessage:\n"
@@ -106,13 +110,13 @@ class DetailInfo(Popup):
     def error_tips(self):
         self.err_tip = ""
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             com.quitcom()
         except Exception as err:
             self.err_tip += "Possible way to resolve the issue: \n\n"
             if str(err)[0:10] == "[Errno 13]":
                 if platform.system() == "Linux":
-                    self.err_tip += f"Open a terminal and type in: sudo chmod 777 {bin.lib.comport_search.ComportService().get_comport()}"
+                    self.err_tip += f"Open a terminal and type in: sudo chmod 777 {bin.lib.comport_search.ComportService().get_comport(special_port)}"
                 elif platform.system() == "Macintosh":
                     self.err_tip += "Give permission to access the cable"
                 elif platform.system() == "Windows":
@@ -130,7 +134,7 @@ class DetailInfo(Popup):
                     self.err_tip += "Unknown OS"
             elif str(err)[0:34] == "could not open port '/dev/ttyUSB0'":
                 self.err_tip += "Please connect the PC with the microcontroller!"
-            elif str(err)[0:26] == f"could not open port '{bin.lib.comport_search.ComportService().get_comport()}'":
+            elif str(err)[0:26] == f"could not open port '{bin.lib.comport_search.ComportService().get_comport(special_port)}'":
                 self.err_tip += "Try using a different cable or close all monitoring software (like MSI Afterburner)"
             else:
                 self.err_tip += "Special Error, consult the manual of Serial"
@@ -171,7 +175,7 @@ class HomeScreen(Screen):
         self.connected = 1
         self.info = f"You are currently running Version {version_app} - If you encounter a bug, please report it!"
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             com.quitcom()
         except Exception as e:
             self.connected = 0
@@ -180,7 +184,7 @@ class HomeScreen(Screen):
 
     def tryconnection(self):
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             com.quitcom()
             self.connected = 1
             self.manager.current = "Readout"
@@ -213,7 +217,7 @@ class ReadoutScreen(Screen):
 
     def comstart(self, pu_on):
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             self.go = 1
         except Exception as e:
             self.go = 0
@@ -331,9 +335,9 @@ class ReadoutScreen(Screen):
 
         if self.com_ok == 1:
             if text == "Normal Mode":
-                bin.lib.communication.SwitchMode().disable_fastmode()
+                bin.lib.communication.SwitchMode().disable_fastmode(special_port)
             else:
-                bin.lib.communication.SwitchMode().enable_fastmode()
+                bin.lib.communication.SwitchMode().enable_fastmode(special_port)
             logger.info("Switched mode, restarting COM")
             self.openpupups()
             self.comstart(0)
@@ -451,7 +455,7 @@ class Program(Screen):
 
     def read_data(self):
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             self.go = 1
         except Exception as e:
             self.go = 0
@@ -556,7 +560,7 @@ class Program(Screen):
                 self.__transmit.append(self.ids.s4_t.text)
                 logger.debug("trying to send...")
                 try:
-                    self.coms.change_all(self.__transmit, "")
+                    self.coms.change_all(self.__transmit, special_port)
                     logger.info("Transmission successful")
                     logger.debug("purging fields...")
                     self.ids.s1_a.text = ""
@@ -633,7 +637,7 @@ class ProgramTemp(Screen):
     def read_data(self):
         logger.info("Trying to establish connection...")
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             self.go = 1
         except Exception as e:
             self.go = 0
@@ -712,7 +716,7 @@ class ProgramTemp(Screen):
                 self.__transmit.append(self.ids.temp_s3.text)
                 self.__transmit.append(self.ids.temp_s4.text)
                 logger.debug("Transmitting...")
-                self.coms.change_temp(self.__transmit, "")
+                self.coms.change_temp(self.__transmit, special_port)
                 self.ids.temp_s1.text = ""
                 self.ids.temp_s2.text = ""
                 self.ids.temp_s3.text = ""
@@ -741,7 +745,7 @@ class ReadData(Screen):
     def read_data(self):
         logger.info("Trying to connect to the microcontroller")
         try:
-            com.connect(19200, "")
+            com.connect(19200, special_port)
             self.go = 1
         except Exception as e:
             self.go = 0

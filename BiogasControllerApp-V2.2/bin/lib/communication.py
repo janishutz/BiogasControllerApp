@@ -85,12 +85,12 @@ class SwitchMode:
     def __init__(self):
         pass
 
-    def enable_fastmode(self):
-        com.connect(19200,"")
+    def enable_fastmode(self, special_port):
+        com.connect(19200, special_port)
         com.send("FM")
         com.quitcom()
 
-    def disable_fastmode(self):
-        com.connect(19200, "")
+    def disable_fastmode(self, special_port):
+        com.connect(19200, special_port)
         com.send("NM")
         com.quitcom()

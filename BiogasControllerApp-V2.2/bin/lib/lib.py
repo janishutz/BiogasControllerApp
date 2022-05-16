@@ -47,7 +47,7 @@ class Com:
             return 0
 
     def decode_int(self, value):
-        self.i = int(value, base = 16)
+        self.i = int(value, base=16)
         return self.i
 
     def decode_float(self, value):

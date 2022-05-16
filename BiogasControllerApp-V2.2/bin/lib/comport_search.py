@@ -7,7 +7,7 @@ class ComportService:
         self.__import = []
         self.__working = []
 
-    def get_comport(self, special_port=""):
+    def get_comport(self, special_port):
         self.__comport = [comport.device for comport in serial.tools.list_ports.comports()]
         self.__pos = 0
         if special_port != "":
