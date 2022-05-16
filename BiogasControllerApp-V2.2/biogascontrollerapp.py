@@ -49,7 +49,6 @@ if config['Port Settings']['specificPort'] == "None" or "\"\"":
     special_port = ""
 else:
     special_port = config['Port Settings']['specificPort']
-print(type(special_port))
 cvr = bin.lib.csv_parsers.CsvRead()
 cvw = bin.lib.csv_parsers.CsvWrite()
 com = bin.lib.lib.Com()
@@ -425,14 +424,15 @@ class Program(Screen):
             self.__mode = 1
         else:
             self.ids.prsel.state = "down"
-            Clock.schedule_once(self.read_data())
+            Clock.schedule_once(self.read_data, 1)
             self.__mode = 2
 
     def change_mode(self):
         logger.info("Changing mode")
         logger.debug(f"mode was: {self.__mode}")
-        if self.__mode == "1":
-            Clock.schedule_once(self.read_data())
+        if self.__mode == 1:
+            logger.debug("Sending instruction to read info")
+            Clock.schedule_once(self.read_data, 1)
             self.__mode = 2
         else:
             self.ids.s1_a.text = ""
@@ -453,7 +453,8 @@ class Program(Screen):
             self.ids.s4_t.text = ""
             self.__mode = 1
 
-    def read_data(self):
+    def read_data(self, dt):
+        logger.debug("Starting to read data from the microcontroller")
         try:
             com.connect(19200, special_port)
             self.go = 1
@@ -619,22 +620,25 @@ class ProgramTemp(Screen):
             self.__mode = 1
         else:
             self.ids.prsel.state = "down"
-            Clock.schedule_once(self.read_data())
+            Clock.schedule_once(self.read_data, 1)
             self.__mode = 2
 
     def change_mode(self):
-        logger.info(f"Mode was: {self.__mode}")
-        if self.__mode == "1":
-            Clock.schedule_once(self.read_data())
+        logger.info("Changing mode")
+        logger.debug(f"Mode was: {self.__mode}")
+        if self.__mode == 1:
+            logger.info("starting sub-thread")
+            Clock.schedule_once(self.read_data, 1)
             self.__mode = 2
         else:
+            logger.info("clearing screen")
             self.ids.temp_s1.text = ""
             self.ids.temp_s2.text = ""
             self.ids.temp_s3.text = ""
             self.ids.temp_s4.text = ""
             self.__mode = 1
 
-    def read_data(self):
+    def read_data(self, dt):
         logger.info("Trying to establish connection...")
         try:
             com.connect(19200, special_port)
@@ -690,11 +694,9 @@ class ProgramTemp(Screen):
                         self.ids.temp_s4.text = self.__output
                     self.__pos += 1
                 logger.info("Recieved data")
+                com.quitcom()
             else:
                 self.open_confail_pu()
-            com.quitcom()
-        else:
-            self.open_confail_pu()
 
     def create_com(self):
         self.coms = bin.lib.communication.Communication()
@@ -867,4 +869,5 @@ class BiogasControllerApp(App):
 logger.info("Init finished, starting UI")
 
 if __name__ == "__main__":
-    BiogasControllerApp().run()
+    bga = BiogasControllerApp()
+    bga.run()
