@@ -1,12 +1,12 @@
 """This Program is CLI only!"""
 
 import matplotlib.pyplot as plt
-import numpy as np
 import csv
 import os
 
 path = input("Path to csv-file to be plotted: ")
 date = input("Date & time at which the measurement was taken (approx.): ")
+group = input("Group-name: ")
 saveit = input("Should the graph be saved? (y/n) ").lower()
 
 imp = open(path, "r")
@@ -41,7 +41,7 @@ if saveit == "y":
     except FileExistsError:
         pass
     plt.savefig(save_path)
-    os.rename(f"{save_path}/.png", f"{save_path}/GC-{date}.png")
+    os.rename(f"{save_path}/.png", f"{save_path}/GC-{date}-{group}.png")
     print(f"saved images to {save_path}")
 else:
     print("didn't save images")
