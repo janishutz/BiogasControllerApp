@@ -1,6 +1,5 @@
 import os
 import configparser
-
 import serial
 
 config = configparser.ConfigParser()
