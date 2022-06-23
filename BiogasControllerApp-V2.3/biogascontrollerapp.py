@@ -888,5 +888,6 @@ try:
     if __name__ == "__main__":
         bga = BiogasControllerApp()
         bga.run()
+
 except Exception as e:
-    logger.critical(e)
+    logger.critical(e, exc_info=True)
