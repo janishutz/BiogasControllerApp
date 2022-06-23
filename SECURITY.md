@@ -16,3 +16,4 @@ The support for Version 2.2.0 and below will end with the next Version (2.4.0)!
 ## Reporting a Vulnerability
 
 If you find any potential security issues, please let me know through the issues tab. You can expect an update to arrive in not under a week of opening the issue. 
+Other option: Fix it yourself and then open a pull request on this GitHub page.

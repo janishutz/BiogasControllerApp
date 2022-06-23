@@ -59,6 +59,25 @@ dev-V2.2rev5:
 V2.2-Rc1:
 - fixed a bug that could cause the app not to show any error when using the new feature.
 
+
+dev-V2.3rev1
+- Added a config file with config readout
+
+dev-V2.3rev2
+- Added a logger so bugs can more easily be found
+
+dev-V2.3rev3
+- Fixed a bug that sometimes crashed the app and in the other cases didn't properly load the old values
+
+dev-V2.3rev4
+- A couple of bugfixes
+
+dev-V2.3rev5
+- Added the GPL V3 License
+- Added License information into the program as this is required by the License
+
+V2.3-Rc1:
+- Bugfixes
 		
 FULL RELEASES
 	
@@ -73,8 +92,15 @@ V2.1
 - MORE RELIABLE Comport handling
 - BUGFIXES
 
-V2.2 (Upcoming)
+V2.2
 - ALLOWS for easier configuration changing
 - ADDS a Settings screen
 - ADDS easier bug-reporting
+- BUGFIXES
+
+V2.3
+- UPDATES / FIXES support for partial reprogramming (old values will be loaded)
+- ADDS logging (you can include the logs in a bugreport so the devs can pin-point the exact cause and replicate the error)
+- ADDS some settings through a config file
+- CHANGED License from NONE to GPL V3
 - BUGFIXES
