@@ -2,7 +2,8 @@
 				
 **BiogasControllerApp V2.3**
 				
-		
+		THIS SOFWARE FALLS UNDER THE GPL V3 LICENSE AND AS SUCH COMES WITH
+		ABSOLUTELY NO WARRANTY!
 		
 Thank you for downloading the new Version of the BiogasControllerApp! You are greeted with 
 lots of new features, including a new and redesigned Graphical User Interface (later "GUI")

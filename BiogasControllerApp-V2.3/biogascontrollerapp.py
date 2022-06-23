@@ -163,6 +163,14 @@ class SaveConf(Popup):
     pass
 
 
+class InfoPU(Popup):
+    def notshowanymore(self):
+        config.set("License", "show", "0")
+        with open("./config/settings.ini", "w") as configfile:
+            config.write(configfile)
+        self.dismiss()
+
+
 ####################################################################
 # SCREENS
 ####################################################################
@@ -180,7 +188,16 @@ class HomeScreen(Screen):
             logger.error(e)
         return self.info
 
+    def openlicensepu(self):
+        self.licensepu = InfoPU()
+        self.licensepu.open()
+
     def tryconnection(self):
+        if config["License"]["show"] == "1":
+            self.openlicensepu()
+            logger.info("Showing License info")
+        else:
+            pass
         try:
             com.connect(19200, special_port)
             com.quitcom()
@@ -867,6 +884,9 @@ class BiogasControllerApp(App):
 
 logger.info("Init finished, starting UI")
 
-if __name__ == "__main__":
-    bga = BiogasControllerApp()
-    bga.run()
+try:
+    if __name__ == "__main__":
+        bga = BiogasControllerApp()
+        bga.run()
+except Exception as e:
+    logger.critical(e)

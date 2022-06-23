@@ -7,6 +7,25 @@ RootScreen:
     Credits:
     Modify:
 
+<InfoPU>:
+    title: "NOTICE"
+    size_hint: 0.7, 0.5
+    auto_dismiss: True
+    GridLayout:
+        cols:1
+        Label:
+            text: "THIS SOFTWARE IS FREE SOFTWARE LICENSED UNDER THE GNU GENERAL PUBLIC LICENSE V3 (GPL V3) AND AS SUCH COMES WITH ABSOLUTELY NO WARRANTY! \n\nmore info under Settings > Credits"
+            text_size: self.width, None
+        GridLayout:
+            cols: 2
+            Button:
+                text: "ok"
+                on_release:
+                    root.dismiss()
+            Button:
+                text: "Don't show anymore"
+                on_release:
+                    root.notshowanymore()
 <QuitPU>:
     title: "BiogasControllerApp"
     font_size: 50
@@ -626,6 +645,9 @@ RootScreen:
                 text: "This is a rework of the BiogasControllerApp V1, that was originally programmed by S. Reichmuth."
             Label:
                 text: "Written by:                   Janis Hutz\nDesigned by:                Janis Hutz\nDesign language:         Kivy"
+            Label:
+                text: "This software is free Software licensed under the GPL V3 (GNU General Public License) and as such comes with absolutely no warranty. In return, you can use, modify, distribute or use any of the code of this software in your own project, if you reuse the same license. For more infos, you can find a copy of this license in the project folder."
+                text_size: self.width, None
 
 <Modify>:
     on_pre_enter: self.config = root.read_config()
