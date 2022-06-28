@@ -23,8 +23,8 @@ for i in range(lenght):
 plt.plot(x, y, color="MAGENTA")
 plt.xlabel("Time")
 plt.ylabel("Voltage")
-titel = f"GC - Biogasanlage {date}"
-plt.title(titel)
+title = f"GC - Biogasanlage {date}"
+plt.title(title)
 plt.grid(True)
 if saveit == "y":
     pos = 0

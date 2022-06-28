@@ -40,7 +40,7 @@ plt.annotate(formula, xy=(0.85,60))
 plt.grid(True)
 plt.show()
 
-saveit = input("Sollen der Graph gespeichert werden? (y/n) ")
+saveit = input("Sollen der Graph gespeichert werden? (y/n) ").lower()
 if saveit == "y":
     plt.savefig("Sonde"+str(n)+".png")
     plt.savefig("Sonde"+str(n)+".pdf", format="pdf")
