@@ -30,7 +30,6 @@ if go == 1:
     fit = np.polyfit(x, y, 2)
     print(fit)
 
-    formula = "F(U) = %sU^2+%sU+%s"%(str(), str(round(float(fit[1]), 4)), str(round(float(fit[2]), 4)))
     formula = f"F(U) = {round(float(fit[0]), 4)}U^2+{round(float(fit[1]), 4)}U+{round(float(fit[2]), 4)}"
 
     fit_fn = np.poly1d(fit)
