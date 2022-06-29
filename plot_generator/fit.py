@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 go = 0
 
 n = int(input("Aktuelle Sondennummer: "))
+
 try:
     imp = open("Sonden2021.csv", "r")
     go = 1
 except FileNotFoundError:
-    print("Failed to open file (non-existent or corrupted")
+    print("Failed to open file (non-existent or corrupted?)")
     go = 0
+
 if go == 1:
     reader = csv.reader(imp, delimiter=',')
     rohdaten = list(reader)
@@ -22,10 +24,10 @@ if go == 1:
         extract = rohdaten.pop(0)
         sondennummer = int(extract.pop(0))
         if sondennummer == n:
-            xe = extract.pop(0)
             ye = extract.pop(0)
-            y.append(float(xe))
-            x.append(float(ye))
+            xe = extract.pop(0)
+            y.append(float(ye))
+            x.append(float(xe))
 
     fit = np.polyfit(x, y, 2)
     print(fit)
@@ -33,7 +35,6 @@ if go == 1:
     formula = f"F(U) = {round(float(fit[0]), 4)}U^2+{round(float(fit[1]), 4)}U+{round(float(fit[2]), 4)}"
 
     fit_fn = np.poly1d(fit)
-
 
     plt.plot(x, fit_fn(x), color="BLUE", label="T(U)")
 
@@ -49,6 +50,7 @@ if go == 1:
     plt.show()
 
     saveit = input("Soll der Graph gespeichert werden? (y/n) ").lower()
+
     if saveit == "y":
         plt.savefig("Sonde"+str(n)+".png")
         plt.savefig("Sonde"+str(n)+".pdf", format="pdf")
