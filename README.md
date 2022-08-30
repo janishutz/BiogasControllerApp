@@ -1,11 +1,11 @@
 		
 				
-**BiogasControllerApp V2.3.0**
+# **BiogasControllerApp V2.3.0**
 				
 		THIS SOFWARE FALLS UNDER THE GPL V3 LICENSE AND AS SUCH COMES WITH
 		ABSOLUTELY NO WARRANTY!
 		
-*LOOKING FOR A MacOS BUILD MAINTAINER! You may follow the official build instructions on the kivy.org website. All other materials should already be included in this repository*
+### *LOOKING FOR A MacOS BUILD MAINTAINER! You may follow the official build instructions on the kivy.org website. All other materials should already be included in this repository*
 
 Thank you for downloading the new Version of the BiogasControllerApp! You are greeted with 
 lots of new features, including a new and redesigned Graphical User Interface (later "GUI")
@@ -13,7 +13,7 @@ and an automatic assignment of the comport on all supported Operating systems (s
 	
 	
 	
-*FEATURE LIST*
+## *FEATURE LIST*
 - Easily read out the data the Microcontroller used in ENATECH sends
 - Easily change the coefficients for the temperature sonds
 - Easily change the temperature that is set for the controller to heat to
