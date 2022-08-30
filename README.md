@@ -5,7 +5,7 @@
 		THIS SOFWARE FALLS UNDER THE GPL V3 LICENSE AND AS SUCH COMES WITH
 		ABSOLUTELY NO WARRANTY!
 		
-### *LOOKING FOR A MacOS BUILD MAINTAINER! You may follow the official build instructions on the kivy.org website. All other materials should already be included in this repository*
+***LOOKING FOR A MacOS BUILD MAINTAINER! You may follow the official build instructions on the kivy.org website. All other materials should already be included in this repository***
 
 Thank you for downloading the new Version of the BiogasControllerApp! You are greeted with 
 lots of new features, including a new and redesigned Graphical User Interface (later "GUI")
