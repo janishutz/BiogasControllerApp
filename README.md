@@ -1,5 +1,5 @@
 <div id="title" align="center">
-    <img src="./logo.png" width="300">
+    <img src="./BiogasControllerApp-V2.3/BiogasControllerAppLogo.png" width="300">
     <h1>BiogasControllerApp</h1>
 </div>
 
