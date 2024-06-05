@@ -20,7 +20,10 @@
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/downloads/simplePCBuilding/BiogasControllerApp/latest/total?label=Downloads (latest)">
     <img src="https://img.shields.io/github/release/simplePCBuilding/BiogasControllerApp.svg">
     <img src="https://img.shields.io/github/package-json/v/simplePCBuilding/BiogasControllerApp.svg?label=Development Version">
-    
+</div>
+
+<div id="donate" align="center">
+    <a href="https://store.janishutz.com/donate" target="_blank"><img src="https://store-cdn.janishutz.com/static/support-me.jpg" width="150px"></a>
 </div>
 				
 ***LOOKING FOR A MacOS BUILD MAINTAINER! You may follow the official build instructions on the kivy.org website. All other materials should already be included in this repository***
@@ -59,3 +62,8 @@ Only needed if you run with python directly
 
 # Contributing
 If you wish to contribute to this project, please fork this repository, create a new branch in your fork, make your changes and open a pull request in this repo. 
+
+
+<div id="donate" align="center">
+    <a href="https://store.janishutz.com/donate" target="_blank"><img src="https://store-cdn.janishutz.com/static/support-me.jpg" width="150px"></a>
+</div>
