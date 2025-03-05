@@ -1,0 +1,46 @@
+<HomeScreen>:
+    name: "home"
+    canvas.before:
+        Color:
+            rgba: (50,50,50,0.2)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    GridLayout:
+        cols:1
+        Label:
+            text: "BiogasanlageControllerApp"
+            font_size: 50
+            color: (0, 113, 0, 1)
+            bold:True
+            italic:True
+        FloatLayout:
+            GridLayout:
+                cols: 2
+                size_hint: 0.8, 0.8
+                pos_hint: {"x": 0.1, "y": 0.1}
+                Button:
+                    text: "Start"
+                    background_color: (255, 0, 0, 0.6)
+                    font_size: 30
+                    on_release:
+                        root.start()
+                Button:
+                    text: "Quit"
+                    background_color: (255, 0, 0, 0.6)
+                    font_size: 30
+                    on_release:
+                        root.quit()
+            Label:
+                text: "App version"
+                id: app_version
+                font_size: 13
+                pos_hint: {"y": -0.45, "x":0.05}
+            Button:
+                text: "Settings"
+                font_size: 13
+                size_hint: 0.07, 0.06
+                pos_hint: {"x":0.01, "y":0.01}
+                background_color: (50, 0, 0, 0.2)
+                on_release:
+                    root.to_settings()

@@ -9,10 +9,21 @@ class Com:
         self._serial: Optional[serial.Serial] = None
         self._filters = filters if filters != None else [ 'USB-Serial Controller', 'Prolific USB-Serial Controller' ]
         self._port_override = ''
+        self._baudrate = 19200
 
     def set_port_override(self, override: str) -> None:
         """Set the port override, to disable port search"""
         self._port_override = override
+
+    def _connection_check(self) -> bool:
+        if self._serial == None:
+            return self._open()
+        if self._serial != None:
+            if not self._serial.is_open:
+                self._serial.open()
+            return True
+        else:
+            return False
 
     def get_comport(self) -> str:
         """Find the comport the microcontroller has attached to"""
@@ -34,19 +45,23 @@ class Com:
 
         return ''
 
-    def connect(self, baud_rate: int, port_override: Optional[str] = None) -> bool:
-        """Try to find a comport and connect to the microcontroller. Returns the success as a boolean"""
+    def _open(self) -> bool:
         comport = self.get_comport()
 
         # Comport search returns empty string if search unsuccessful
         if comport == '':
             try:
-                self._serial = serial.Serial(comport, baud_rate, timeout=5)
+                self._serial = serial.Serial(comport, self._baudrate, timeout=5)
             except:
                 return False
             return True
         else:
             return False
+
+    def connect(self, baud_rate: int) -> bool:
+        """Try to find a comport and connect to the microcontroller. Returns the success as a boolean"""
+        self._baudrate = baud_rate
+        return self._connection_check()
 
     def close(self) -> None:
         """Close the serial connection, if possible"""
@@ -58,23 +73,24 @@ class Com:
 
     def receive(self, byte_count: int) -> bytes:
         """Recieve bytes from microcontroller over serial. Returns bytes. Might want to decode using functions from lib.tools"""
-        if self._serial == None:
-            self.connect(19200)
+        self._connection_check()
         if self._serial != None:
             return self._serial.read(byte_count)
         else:
-            raise Exception('ERR_CONNECTION')
+            raise Exception('ERR_CONNECTING')
 
     def send(self, msg: str) -> None:
-        """Send a string over serial connection."""
-        if self._serial == None:
-            self.connect(19200)
+        """Send a string over serial connection. Will open a connection if none is available"""
+        self._connection_check()
         if self._serial != None:
             self._serial.write(msg.encode())
+        else:
+            raise Exception('ERR_CONNECTING')
 
     def send_float(self, msg: float) -> None:
         """Send a float number over serial connection"""
-        if self._serial == None:
-            self.connect(19200)
+        self._connection_check()
         if self._serial != None:
             self._serial.write(bytearray(struct.pack('>f', msg))[0:3])
+        else:
+            raise Exception('ERR_CONNECTING')
