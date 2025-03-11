@@ -1,3 +1,3 @@
-from gui.popups import *
+from gui.popups.popups import *
 
 

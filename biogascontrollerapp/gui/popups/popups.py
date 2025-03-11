@@ -1,8 +1,8 @@
-from kivy.uix.screenmanager import Screen
+from kivy.uix.popup import Popup
 from kivy.lang import Builder
 
 
-class HomeScreen(Screen):
+class ThisPopup(Popup):
     def start(self):
         pass
 
