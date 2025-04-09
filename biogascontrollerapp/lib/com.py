@@ -10,10 +10,14 @@ class Com:
         self._filters = filters if filters != None else [ 'USB-Serial Controller', 'Prolific USB-Serial Controller' ]
         self._port_override = ''
         self._baudrate = 19200
+        self._err = None
 
     def set_port_override(self, override: str) -> None:
         """Set the port override, to disable port search"""
         self._port_override = override
+
+    def get_error(self) -> serial.SerialException | None:
+        return self._err
 
     def _connection_check(self) -> bool:
         if self._serial == None:
@@ -52,7 +56,8 @@ class Com:
         if comport == '':
             try:
                 self._serial = serial.Serial(comport, self._baudrate, timeout=5)
-            except:
+            except serial.SerialException as e:
+                self._err = e
                 return False
             return True
         else:

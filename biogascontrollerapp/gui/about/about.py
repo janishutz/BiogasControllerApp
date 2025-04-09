@@ -3,8 +3,8 @@ from kivy.lang import Builder
 import webbrowser
 
 
-class SettingsScreen(Screen):
+class AboutScreen(Screen):
     def report_issue(self):
         webbrowser.open('https://github.com/janishutz/BiogasControllerApp/issues', new=2)
 
-Builder.load_file('./gui/settings/settings.kv')
+Builder.load_file('./gui/about/about.kv')

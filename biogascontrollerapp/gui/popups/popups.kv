@@ -1,26 +1,10 @@
-<SingleRowPopUp>:
-    title: "INFORMATION"
-    size_hint: 0.7, 0.5
-    auto_dismiss: True
-    GridLayout:
-        cols: 1
-        Label:
-            id: msg
-            text_size: self.width, None
-        GridLayout:
-            cols: 1
-            Button:
-                text: "Ok"
-                on_release:
-                    root.dismiss()
-
-<QuitPopUp>:
+<QuitPopup>:
     title: "BiogasControllerApp"
     font_size: 50
     size_hint: 0.5, 0.4
     auto_dismiss: False
     GridLayout:
-        cols:1
+        cols: 1
         Label:
             text: "Are you sure you want to leave?"
             font_size: 20
@@ -38,6 +22,24 @@
                 on_press:
                     root.dismiss()
 
+<SingleRowPopup>:
+    title: "INFORMATION"
+    size_hint: 0.7, 0.5
+    auto_dismiss: True
+    GridLayout:
+        cols: 1
+        Label:
+            id: msg
+            text: "Message"
+            text_size: self.width, None
+            halign: 'center'
+        GridLayout:
+            cols: 1
+            Button:
+                text: "Ok"
+                on_release:
+                    root.dismiss()
+
 <TwoActionPopup>:
     title: "WARNING!"
     font_size: 50
@@ -49,16 +51,20 @@
             id: msg
             text: "Message"
             font_size: 20
+            halign: 'center'
         GridLayout:
             cols:2
             Button:
                 id: btn1
                 text: "Details"
                 on_release:
-                    root.action()
+                    root.action_one()
+                    root.dismiss()
             Button:
+                id: btn2
                 text:"Ok"
                 on_release:
+                    root.action_two()
                     root.dismiss()
 
 <DualRowPopup>:
@@ -87,8 +93,8 @@
     size_hint: 1, 0.7
     auto_dismiss: False
     GridLayout:
+        cols: 1
         Label:
-        cols:1
             id: msg_title
             text: "title"
             font_size: 20

@@ -1,8 +1,10 @@
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 
+from lib.com import Com
 
-class HomeScreen(Screen):
+
+class MainScreen(Screen):
     def __init__(self, com: Com, **kw):
         self._com = com;
         super().__init__(**kw)
@@ -10,11 +12,14 @@ class HomeScreen(Screen):
     def start(self):
         pass
 
-    def quit(self):
+    def end(self):
         pass
 
-    def to_settings(self):
+    def reset(self):
+        pass
+
+    def back(self):
         pass
 
 
-Builder.load_file('./gui/home/home.kv')
+Builder.load_file('./gui/main/main.kv')
