@@ -1,5 +1,15 @@
 ***CHANGELOG***
 
+V3.0-beta
+- Redesigned GUI
+- Consolidated multiple previously separate screens
+- Completely rewritten backend
+- Improved stability
+- Cleaned, documented code
+
+OLD VERSIONS
+------------
+
 DEVELOPMENT VERSIONS
 	
 dev-V2rev1:
@@ -104,3 +114,4 @@ V2.3
 - ADDS some settings through a config file
 - CHANGED License from NONE to GPL V3
 - BUGFIXES
+

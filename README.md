@@ -25,7 +25,13 @@
 <div id="donate" align="center">
     <a href="https://store.janishutz.com/donate" target="_blank"><img src="https://store-cdn.janishutz.com/static/support-me.jpg" width="150px"></a>
 </div>
-				
+
+BiogasControllerApp has just received a major rewrite, where I focused on code-readability, documentation and stability. The documentation in the code is aimed at beginners and does contain some unnecessary extra comments
+
+If you are here to read the code, the files you are most likely looking for can be found in the `biogascontrollerapp/lib` folder. If you want to understand and have a look at all of the application, start with the `biogascontrollerapp.py` file in the `biogascontrollerapp` folder
+
+# Features
+
 ***LOOKING FOR A MacOS BUILD MAINTAINER! You may follow the official build instructions on the kivy.org website. All other materials should already be included in this repository***
 		
 ## FEATURES

@@ -4,9 +4,15 @@ from kivy.lang import Builder
 
 from lib.com import Com
 
+
+# Just an empty function
 def empty_func():
     pass
 
+#          ╭────────────────────────────────────────────────╮
+#          │                     Popups                     │
+#          ╰────────────────────────────────────────────────╯
+# Below, you can find various popups with various designs that can be used in the app
 class QuitPopup(Popup):
     def __init__(self, com: Com, **kw):
         self._com = com;
@@ -50,4 +56,8 @@ class TwoActionPopup(Popup):
         self.action_two = action_two
         return super().open(*_args, **kwargs)
 
+
+# Load the design file for this screen (.kv files)
+# The path has to be relative to root of the app, i.e. where the biogascontrollerapp.py 
+# file is located
 Builder.load_file('./gui/popups/popups.kv')

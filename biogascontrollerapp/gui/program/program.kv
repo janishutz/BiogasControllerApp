@@ -1,0 +1,131 @@
+<ProgramScreen>:
+    name: "program"
+    on_pre_enter: self.config_loader = root.load_config()
+    canvas.before:
+        Color:
+            rgba: (50,50,50,0.2)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    FloatLayout:
+        Label:
+            text: "Configuration"
+            font_size: 40
+            color: (0, 113, 0, 1)
+            bold: True
+            pos_hint: {"y":0.4}
+        GridLayout:
+            size_hint: 0.8, 0.5
+            pos_hint: {"x":0.1, "y":0.2}
+            cols: 4
+            Label:
+                text: "Sensor 1, a:"
+            TextInput:
+                id: s1_a
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 1, b:"
+            TextInput:
+                id: s1_b
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 1, c:"
+            TextInput:
+                id: s1_c
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 1, Temp:"
+            TextInput:
+                id: s1_t
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 2, a:"
+            TextInput:
+                id: s2_a
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 2, b:"
+            TextInput:
+                id: s2_b
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 2, c:"
+            TextInput:
+                id: s2_c
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 2, Temp:"
+            TextInput:
+                id: s2_t
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 3, a:"
+            TextInput:
+                id: s3_a
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 3, b:"
+            TextInput:
+                id: s3_b
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 3, c:"
+            TextInput:
+                id: s3_c
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 3, Temp:"
+            TextInput:
+                id: s3_t
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 4, a:"
+            TextInput:
+                id: s4_a
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 4, b:"
+            TextInput:
+                id: s4_b
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 4, c:"
+            TextInput:
+                id: s4_c
+                multiline: False
+                input_filter: "float"
+            Label:
+                text: "Sensor 4, Temp:"
+            TextInput:
+                id: s4_t
+                multiline: False
+                input_filter: "float"
+        Button:
+            text: "Back"
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.1, "y":0.1}
+            background_color: (255, 0, 0, 0.6)
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "up"
+        Button:
+            text: "Save"
+            size_hint: 0.2, 0.1
+            pos_hint: {"x":0.6, "y":0.1}
+            background_color: (255, 0, 0, 0.6)
+            on_release:
+                root.save()

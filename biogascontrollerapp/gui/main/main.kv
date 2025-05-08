@@ -74,25 +74,7 @@
             on_text: root.switch_mode(mode_selector.text)
             background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
         Button:
-            text: "Read Data"
-            size_hint: 0.15, 0.1
-            pos_hint: {"x":0.3, "y":0.2}
-            background_color: (255, 0, 0, 0.6)
-            on_release:
-                root.end()
-                app.root.current = "read"
-                root.manager.transition.direction = "down"
-        Button:
-            text: "Temperature"
-            size_hint: 0.15, 0.1
-            pos_hint: {"x":0.5, "y":0.2}
-            background_color: (255, 0, 0, 0.6)
-            on_release:
-                root.end()
-                app.root.current = "temperature"
-                root.manager.transition.direction = "down"
-        Button:
-            text: "Change all Data"
+            text: "Configuration"
             size_hint: 0.15, 0.1
             pos_hint: {"x":0.7, "y":0.2}
             background_color: (255, 0, 0, 0.6)
@@ -101,7 +83,7 @@
                 app.root.current = "program"
                 root.manager.transition.direction = "down"
         Label:
-            id: frequency
-            text: "Frequency will appear here"
+            id: status
+            text: "Status will appear here"
             font_size: 10
             pos_hint: {"x":0.4, "y": 0.3}

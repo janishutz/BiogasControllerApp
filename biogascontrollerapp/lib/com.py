@@ -5,11 +5,11 @@ import serial.tools.list_ports
 
 
 class Com:
-    def __init__(self, filters: Optional[list[str]] = None) -> None:
+    def __init__(self, baudrate: int = 19200, filters: Optional[list[str]] = None) -> None:
         self._serial: Optional[serial.Serial] = None
         self._filters = filters if filters != None else [ 'USB-Serial Controller', 'Prolific USB-Serial Controller' ]
         self._port_override = ''
-        self._baudrate = 19200
+        self._baudrate = baudrate
         self._err = None
 
     def set_port_override(self, override: str) -> None:
@@ -47,7 +47,7 @@ class Com:
         except:
             pass
 
-        return ''
+        return ""
 
     def _open(self) -> bool:
         comport = self.get_comport()
@@ -63,9 +63,8 @@ class Com:
         else:
             return False
 
-    def connect(self, baud_rate: int) -> bool:
+    def connect(self) -> bool:
         """Try to find a comport and connect to the microcontroller. Returns the success as a boolean"""
-        self._baudrate = baud_rate
         return self._connection_check()
 
     def close(self) -> None:
