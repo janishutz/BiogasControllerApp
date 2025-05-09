@@ -4,17 +4,17 @@ from kivy.lang import Builder
 from lib.decoder import Decoder
 from lib.instructions import Instructions
 from gui.popups.popups import SingleRowPopup, TwoActionPopup, empty_func
-from lib.com import Com
+from lib.com import ComSuperClass
 from kivy.clock import Clock
 
 
 # The below list maps 0, 1, 2, 3 to a, b, c and t respectively
 # This is used to set and read values of the UI
-name_map = [ "a", "b", "c", "t" ]
+name_map = ["a", "b", "c", "t"]
 
 
 class ProgramScreen(Screen):
-    def __init__(self, com: Com, **kw):
+    def __init__(self, com: ComSuperClass, **kw):
         self._com = com
         self._instructions = Instructions(com)
         self._decoder = Decoder()
@@ -31,7 +31,18 @@ class ProgramScreen(Screen):
             # Load config for all four sensors
             for _ in range(4):
                 # Receive 28 bytes of data
-                received = self._com.receive(28)
+                received = bytes()
+                try:
+                    received = self._com.receive(28)
+                except:
+                    TwoActionPopup().open(
+                        "Failed to connect to micro-controller, retry?",
+                        "Cancel",
+                        empty_func,
+                        "Retry",
+                        lambda: self._load(0),
+                    )
+                    return
 
                 # Create a list of strings to store the config for the sensor
                 # This list has the following elements: a, b, c, temperature
@@ -39,7 +50,9 @@ class ProgramScreen(Screen):
 
                 # Create the list
                 for j in range(4):
-                    config_sensor_i.append(str(self._decoder.decode_float(received[7 * j:7 * j + 6])))
+                    config_sensor_i.append(
+                        str(self._decoder.decode_float(received[7 * j : 7 * j + 6]))
+                    )
 
                 # Add it to the config
                 config.append(config_sensor_i)
@@ -56,12 +69,14 @@ class ProgramScreen(Screen):
     def _set_ui(self, config: List[List[str]]):
         for sensor_id in range(4):
             for property in range(4):
-                self.ids[f"s{sensor_id + 1}_{name_map[property]}"].text = config[sensor_id][property]
+                self.ids[f"s{sensor_id + 1}_{name_map[property]}"].text = config[
+                    sensor_id
+                ][property]
 
     # Read values from the UI. Returns the values as a list or None if the check was infringed
     def _read_ui(self, enforce_none_empty: bool = True) -> List[float] | None:
         data: List[float] = []
-        
+
         # Iterate over all sensor config input fields and collect the data
         for sensor_id in range(4):
             for property in range(4):

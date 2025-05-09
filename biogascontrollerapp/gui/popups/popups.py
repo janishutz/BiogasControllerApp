@@ -2,7 +2,7 @@ from typing import Callable
 from kivy.uix.popup import Popup
 from kivy.lang import Builder
 
-from lib.com import Com
+from lib.com import ComSuperClass
 
 
 # Just an empty function
@@ -14,7 +14,7 @@ def empty_func():
 #          ╰────────────────────────────────────────────────╯
 # Below, you can find various popups with various designs that can be used in the app
 class QuitPopup(Popup):
-    def __init__(self, com: Com, **kw):
+    def __init__(self, com: ComSuperClass, **kw):
         self._com = com;
         super().__init__(**kw)
 

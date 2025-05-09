@@ -1,4 +1,4 @@
-from lib.com import Com
+from lib.com import ComSuperClass
 import lib.decoder
 import time
 
@@ -9,7 +9,7 @@ decoder = lib.decoder.Decoder()
 # Class that supports sending instructions to the microcontroller,
 # as well as hooking to data stream according to protocol
 class Instructions:
-    def __init__(self, com: Com) -> None:
+    def __init__(self, com: ComSuperClass) -> None:
         self._com = com
 
     # Set a port override (to use a specific COM port)

@@ -16,7 +16,8 @@ import os
 import configparser
 from typing import override
 
-from lib.com import Com
+from lib.com import Com, ComSuperClass
+import lib.test.com
 
 
 # Load the config file
@@ -24,7 +25,7 @@ config = configparser.ConfigParser()
 config.read("./config.ini")
 
 # Load config and disable kivy log if necessary
-if config["Dev Settings"]["verbose"] == "True":
+if config["Dev"]["verbose"] == "True":
     pass
 else:
     os.environ["KIVY_NO_CONSOLELOG"] = "1"
@@ -63,7 +64,10 @@ class BiogasControllerApp(App):
 
     @override
     def build(self):
-        com = Com()
+        com: ComSuperClass = Com()
+        if config["Dev"]["use_test_library"] == "True":
+            com = lib.test.com.Com()
+
         self.icon = "./BiogasControllerAppLogo.png"
         self.title = "BiogasControllerApp-" + app_version
         self.screen_manager.add_widget(HomeScreen(com, name="home"))

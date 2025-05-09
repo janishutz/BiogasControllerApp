@@ -1,32 +1,26 @@
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from gui.popups.popups import QuitPopup, TwoActionPopup
-from lib.com import Com
+from lib.com import ComSuperClass
 
 import configparser
 
-config = configparser.ConfigParser()
-config.read('./config.ini')
 
 # This is the launch screen, i.e. what you see when you start up the app
 class HomeScreen(Screen):
-    def __init__(self, com: Com, **kw):
+    def __init__(self, com: ComSuperClass, **kw):
         self._com = com;
         super().__init__(**kw)
 
     # Go to the main screen if we can establish connection or the check was disabled 
     # in the configs
     def start(self):
-        if config[ 'Dev Settings' ][ 'disableconnectioncheck' ] != "True":
-            if self._com.connect():
-                self.manager.current = 'main'
-                self.manager.transition.direction = 'right'
-            else:
-                TwoActionPopup().open('Failed to connect', 'Details', self.open_details_popup)
-                print('ERROR connecting')
-        else:
+        if self._com.connect():
             self.manager.current = 'main'
             self.manager.transition.direction = 'right'
+        else:
+            TwoActionPopup().open('Failed to connect', 'Details', self.open_details_popup)
+            print('ERROR connecting')
 
     # Open popup for details as to why the connection failed
     def open_details_popup(self):

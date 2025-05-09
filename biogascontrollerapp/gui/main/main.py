@@ -10,7 +10,7 @@ import threading
 
 # Load utilities
 from lib.instructions import Instructions
-from lib.com import Com
+from lib.com import ComSuperClass
 from lib.decoder import Decoder
 
 
@@ -26,13 +26,13 @@ synced_queue: queue.Queue[List[str]] = queue.Queue()
 #          ╰────────────────────────────────────────────────╯
 # Using a Thread to run this in parallel to the UI to improve responsiveness
 class ReaderThread(threading.Thread):
-    _com: Com
+    _com: ComSuperClass
     _decoder: Decoder
     _instructions: Instructions
 
     # This method allows the user to set Com object to be used.
     # The point of this is to allow for the use of a single Com object to not waste resources
-    def set_com(self, com: Com):
+    def set_com(self, com: ComSuperClass):
         """Set the Com object to be used in this
 
         Args:
@@ -41,6 +41,7 @@ class ReaderThread(threading.Thread):
         self._com = com
         self._run = True
         self._decoder = Decoder()
+        self._instructions = Instructions(com)
 
     # This method is given by the Thread class and has to be overriden to change
     # what is executed when the thread starts
@@ -98,7 +99,7 @@ class MainScreen(Screen):
 
     # The constructor if this class takes a Com object to share one between all screens
     # to preserve resources and make handling better
-    def __init__(self, com: Com, **kw):
+    def __init__(self, com: ComSuperClass, **kw):
         # Set some variables
         self._com = com
         self._event = None
@@ -117,9 +118,11 @@ class MainScreen(Screen):
     def start(self):
         self.ids.status.text = "Connecting..."
         if self._com.connect():
+            print("Acquired connection")
             self._has_connected = True
             # Start communication
             self._reader.start()
+            print("Reader has started")
             Clock.schedule_interval(self._update_screen, 0.5)
         else:
             self.ids.status.text = "Connection failed"
@@ -145,10 +148,18 @@ class MainScreen(Screen):
                 pass
             self._com.close()
             self.ids.status.text = "Connection terminated"
+            print("Connection terminated")
 
     # A helper function to update the screen. Is called on an interval
-    def _update_screen(self):
-        update = synced_queue.get()
+    def _update_screen(self, dt):
+        update = []
+        try:
+            update = synced_queue.get_nowait()
+        except:
+            pass
+        if len(update) == 0:
+            # There are no updates to process, don't block and simply try again next time
+            return
         if len(update) == 1:
             if update[0] == "ERR_HOOK":
                 self.ids.status.text = "Hook failed"
