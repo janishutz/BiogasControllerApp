@@ -71,8 +71,8 @@ class Com(ComSuperClass):
                 for filter in self._filters:
                     if ( filter in comport ):
                         return comport
-        except:
-            pass
+        except Exception as e:
+            self._err = e
 
         return ""
 
