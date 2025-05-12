@@ -25,6 +25,7 @@ class ProgramScreen(Screen):
 
     # Load the current configuration from the micro-controller
     def _load(self, dt: float):
+        # Hook to the microcontroller's data stream (i.e. sync up with it)
         if self._instructions.hook("RD", ["\n", "R", "D", "\n"]):
             config: List[List[str]] = []
 
@@ -35,6 +36,7 @@ class ProgramScreen(Screen):
                 try:
                     received = self._com.receive(28)
                 except:
+                    # Open error popup
                     TwoActionPopup().open(
                         "Failed to connect to micro-controller, retry?",
                         "Cancel",
