@@ -26,10 +26,7 @@ class Instructions:
             return False
 
         # Send instruction to microcontroller to start hooking process
-        # If instruction is an empty string, do not send instruction
-
-        if instruction != "":
-            self._com.send(instruction)
+        self._com.send(instruction)
 
         # Record start time to respond to timeout
         start = time.time()
@@ -44,7 +41,7 @@ class Instructions:
         while time.time() - start < 5:
             # If the decoded ascii character is equal to the next expected character, move pointer right by one
             # If not, jump back to start
-            if (decoder.decode_ascii(self._com.receive(1))) == sequence[pointer]:
+            if decoder.decode_ascii(self._com.receive(1)) == sequence[pointer]:
                 pointer += 1
             else:
                 pointer = 0
@@ -55,6 +52,39 @@ class Instructions:
 
         # If we time out, which is the only way in which this code can be reached, return False
         return False
+
+    # Used to hook to the main data stream, as that hooking mechanism is differen
+    def hook_main(self) -> bool:
+        # Record start time to respond to timeout
+        start = time.time()
+
+        # Wait to find a CR character (enter)
+        char = decoder.decode_ascii(self._com.receive(1))
+        while char != "\n":
+            if time.time() - start > 3:
+                return False
+            char = decoder.decode_ascii(self._com.receive(1))
+
+        # Store the position in the hooking process
+        state = 0
+        distance = 0
+
+        while time.time() - start < 5 and state < 3:
+            char = decoder.decode_ascii(self._com.receive(1))
+            if char == " ":
+                if distance == 4:
+                    state += 1
+                distance = 0
+            else:
+                if distance > 4:
+                    state = 0
+                    distance = 0
+                else:
+                    distance += 1
+
+        self._com.receive(5)
+
+        return state == 3
 
     # Private helper method to transmit data using the necessary protocols
     def _change_data(

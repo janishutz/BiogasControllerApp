@@ -14,4 +14,5 @@ class Decoder:
         return struct.unpack('>f', bytes.fromhex(str(value, 'ascii') + '0000'))[0]
 
     def decode_int(self, value: bytes) -> int:
+        # return int.from_bytes(value, 'big')
         return int(value, base=16)
