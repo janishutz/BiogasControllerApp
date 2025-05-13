@@ -51,7 +51,7 @@ class ReaderThread(threading.Thread):
         if self._com == None:
             raise ArgumentError("Com object not passed in (do using set_com)")
         # Hook to output stream
-        if self._instructions.hook("", ["\n", " ", " ", " "]):
+        if self._instructions.hook_main():
             # We are now hooked to the stream (i.e. data is synced)
             synced_queue.put(["HOOK"])
 
@@ -72,7 +72,7 @@ class ReaderThread(threading.Thread):
                     # This allows for short code
                     data.append(
                         f"Tadc: {
-                            self._decoder.decode_float(received[12 * i:12 * i + 4])
+                            self._decoder.decode_int(received[12 * i:12 * i + 4])
                         }\nTemperature: {
                             self._decoder.decode_float(received[12 * i + 5:12 * i + 11])
                         }\nDuty-Cycle: {
@@ -135,7 +135,7 @@ class MainScreen(Screen):
             )
 
     # End connection to micro-controller and set it back to normal mode
-    def end(self):
+    def end(self, set_msg: bool = True):
         # Set micro-controller back to Normal Mode when ending communication
         # to make sure temperature control will work
         if self._has_connected:
@@ -147,7 +147,8 @@ class MainScreen(Screen):
             except:
                 pass
             self._com.close()
-            self.ids.status.text = "Connection terminated"
+            if set_msg:
+                self.ids.status.text = "Connection terminated"
             print("Connection terminated")
 
     # A helper function to update the screen. Is called on an interval
@@ -163,7 +164,7 @@ class MainScreen(Screen):
         if len(update) == 1:
             if update[0] == "ERR_HOOK":
                 self.ids.status.text = "Hook failed"
-                self.end()
+                self.end(False)
             elif update[0] == "HOOK":
                 self.ids.status.text = "Connected to controller"
         else:
