@@ -6,7 +6,6 @@ It simulates the behviour of an actual microcontroller being connected
 from typing import Optional
 import queue
 import random
-import serial
 import time
 import struct
 
@@ -50,9 +49,6 @@ class Com(ComSuperClass):
     def set_port_override(self, override: str) -> None:
         """Set the port override, to disable port search"""
         self._port_override = override
-
-    def get_error(self) -> serial.SerialException | None:
-        pass
 
     def get_comport(self) -> str:
         return "test" if self._port_override != "" else self._port_override
@@ -104,37 +100,49 @@ class Com(ComSuperClass):
         for byte in ba:
             self.__simulated_data.put(byte.to_bytes())
 
-    def __fill_queue(self):
-        # Add some dummy data. The data is randomized and is *not*
-        # an accurate simulation of what the microcontroller will return
-        # It only serves to check if the protocol handling works as expected
+    def __fill_queue_alternative(self):
         for _ in range(4):
-            self.__add_to_queue(self.__generate_int_as_bytes(200))
+            for _ in range(4):
+                self.__simulated_data.put(random.randbytes(1))
             self.__simulated_data.put(bytes(" ", "ascii"))
-            self.__add_to_queue(self.__generate_float_as_bytes(size = 6))
+            for _ in range(6):
+                self.__simulated_data.put(random.randbytes(1))
+            self.__simulated_data.put(bytes(" ", "ascii"))
+        for _ in range(3):
+            for _ in range(4):
+                self.__simulated_data.put(random.randbytes(1))
+            self.__simulated_data.put(bytes(" ", "ascii"))
+        for _ in range(4):
+            self.__simulated_data.put(random.randbytes(1))
+        self.__simulated_data.put(bytes("\n", "ascii"))
+        self.__simulated_data_remaining = 68
+
+    def __fill_queue(self):
+        for _ in range(4):
+            self.__add_integer_as_hex(self.__generate_random_int(200))
+            self.__simulated_data.put(bytes(" ", "ascii"))
+            self.__add_float_as_hex(self.__generate_random_float(50))
             self.__simulated_data.put(bytes(" ", "ascii"))
             self.__simulated_data_remaining += 2
         for _ in range(3):
-            self.__add_to_queue(self.__generate_int_as_bytes(65535))
+            self.__add_integer_as_hex(self.__generate_random_int(65535))
             self.__simulated_data.put(bytes(" ", "ascii"))
-        self.__add_to_queue(self.__generate_int_as_bytes(65535))
+        self.__add_integer_as_hex(self.__generate_random_int(65535))
         self.__simulated_data.put(bytes("\n", "ascii"))
         self.__simulated_data_remaining += 4
         print("Length:", self.__simulated_data_remaining)
 
-    def __generate_int_as_bytes(self, upper_limit: int) -> list[bytes]:
-        byte_array = random.randint(0, upper_limit).to_bytes(4, "big")
-        return [byte.to_bytes() for byte in byte_array]
+    def __generate_random_int(self, max: int) -> int:
+        return random.randint(0, max)
 
-    def __generate_float_as_bytes(self, upper_limit: int = 200, size: int = 4) -> list[bytes]:
-        random_float = random.random() * upper_limit
-        byte_data = struct.pack(">f", random_float)
-        data = [byte.to_bytes() for byte in byte_data]
-        for _ in range(size - len(data)):
-            data.append(b'\x00')
-        return data
+    def __generate_random_float(self, max: int) -> float:
+        return random.random() * max
 
-    def __add_to_queue(self, data: list[bytes]):
-        for value in data:
-            self.__simulated_data_remaining += 1
-            self.__simulated_data.put(value)
+    def __add_character_as_hex(self, data: str):
+        pass
+
+    def __add_integer_as_hex(self, data: int):
+        pass
+
+    def __add_float_as_hex(self, data: float):
+        pass
