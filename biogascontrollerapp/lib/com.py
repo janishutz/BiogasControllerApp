@@ -6,11 +6,11 @@ import serial.tools.list_ports
 
 
 class ComSuperClass(ABC):
-    def __init__(self, baudrate: int = 19200, filters: Optional[list[str]] = None) -> None:
+    def __init__(self, baudrate: Optional[int] = 19200, filters: Optional[list[str]] = None) -> None:
         self._serial: Optional[serial.Serial] = None
         self._filters = filters if filters != None else [ 'USB-Serial Controller', 'Prolific USB-Serial Controller' ]
         self._port_override = ''
-        self._baudrate = baudrate
+        self._baudrate = baudrate if baudrate != None else 19200
         self._err = None
 
     def set_port_override(self, override: str) -> None:
