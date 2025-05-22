@@ -10,6 +10,7 @@ depends=('python')
 makedepends=('pyinstaller' 'python-setuptools')
 source=("biogascontrollerapp/biogascontrollerapp.py")
 sha256sums=('SKIP')  # Replace with actual checksum for production use
+# TODO: Update source to be from upstream so only PKGBUILD can be distributed
 
 build() {
   cd "$srcdir"
