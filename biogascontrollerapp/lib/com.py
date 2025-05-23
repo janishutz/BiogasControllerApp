@@ -69,7 +69,7 @@ class Com(ComSuperClass):
             # Filter for specific controller
             for comport in ports:
                 for filter in self._filters:
-                    if ( filter in comport ):
+                    if filter in comport:
                         return comport
         except Exception as e:
             self._err = e
