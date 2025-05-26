@@ -12,17 +12,37 @@
 #
 # ────────────────────────────────────────────────────────────────────
 
-import os
+# Load the config file
 import configparser
+import time
+config = configparser.ConfigParser()
+config.read("./config.ini")
+
+
+# Introducing tariffs to Python imports.
+# It was too funny of an idea to miss out on
+# You can enable or disable this in the config. 
+# It is disabled by default
+if config["Tariffs"]["impose_tariffs"] == "True":
+    try:
+        import tariff
+
+        tariff.set({
+            "kivy": int(config["Tariffs"]["kivy_rate"]),
+            "serial": int(config["Tariffs"]["pyserial_rate"]),
+            })
+    except Exception as e:
+        print(e)
+        print("You cannot evade the tariffs. I will impose impose a tariff of 1000000% on the launch of this app!")
+        time.sleep(2000000)
+
+import os
 from typing import override
 
 from lib.com import Com, ComSuperClass
 import lib.test.com
 
 
-# Load the config file
-config = configparser.ConfigParser()
-config.read("./config.ini")
 
 # Load config and disable kivy log if necessary
 if config["Dev"]["verbose"] == "True":
