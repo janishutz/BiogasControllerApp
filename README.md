@@ -28,15 +28,6 @@ BiogasControllerApp has just received a major rewrite, where I focused on code-r
 
 If you are here to read the code, the files you are most likely looking for can be found in the `lib` folder. If you want to understand and have a look at all of the application, start with the `biogascontrollerapp.py` file
 
-# Features
-- Read data the microcontroller in ENATECH sends
-- Configure the microcontroller (Coefficients & Temperature). Old settings will be pre-loaded
-- Focus on code quality and readability as well as stability
-- Tips to resolve errors directly in the app
-- The app is still maintained and as such known issues will be resolved
-- Clean UI focusing on ease of use
-- Documented code so you can more easily understand what is happening
-
 # Installation
 To install it, navigate to the releases tab on the right hand side. Click the current release, scroll down to assets and select the version appropriate for your operating system.
 
@@ -45,6 +36,15 @@ That means:
 - on Linux, you may download the tarball or you may also download the `install-linux.sh` script to automatically install it for you. Just note: You need to enable execute permissions for the file!
 
 Compared to older versions, the new BiogasControllerApp doesn't install itself as an app and only resides in a folder where you can launch it using the executable or the `launch.sh` script.
+
+# Features
+- Read data the microcontroller in ENATECH sends
+- Configure the microcontroller (Coefficients & Temperature). Old settings will be pre-loaded
+- Focus on code quality and readability as well as stability
+- Tips to resolve errors directly in the app
+- The app is still maintained and as such known issues will be resolved
+- Clean UI focusing on ease of use
+- Documented code so you can more easily understand what is happening
 
 # Issues
 If you encounter any bugs or other weird behaviour, please open an issue on this GitHub repository. 
