@@ -1,0 +1,111 @@
+<QuitPopup>:
+    title: "BiogasControllerApp"
+    font_size: 50
+    size_hint: 0.5, 0.4
+    auto_dismiss: False
+    GridLayout:
+        cols: 1
+        Label:
+            text: "Are you sure you want to leave?"
+            font_size: 20
+        GridLayout:
+            cols:2
+            Button:
+                text: "Yes"
+                font_size: 15
+                on_release:
+                    root.quit()
+                    app.stop()
+            Button:
+                text: "No"
+                font_size: 15
+                on_press:
+                    root.dismiss()
+
+<SingleRowPopup>:
+    title: "INFORMATION"
+    size_hint: 0.7, 0.5
+    auto_dismiss: True
+    GridLayout:
+        cols: 1
+        Label:
+            id: msg
+            text: "Message"
+            text_size: self.width, None
+            halign: 'center'
+        GridLayout:
+            cols: 1
+            Button:
+                text: "Ok"
+                on_release:
+                    root.dismiss()
+
+<TwoActionPopup>:
+    title: "WARNING!"
+    font_size: 50
+    size_hint: 0.5, 0.4
+    auto_dismiss: False
+    GridLayout:
+        cols:1
+        Label:
+            id: msg
+            text: "Message"
+            font_size: 20
+            halign: 'center'
+        GridLayout:
+            cols:2
+            Button:
+                id: btn1
+                text: "Details"
+                on_release:
+                    root.action_one()
+                    root.dismiss()
+            Button:
+                id: btn2
+                text:"Ok"
+                on_release:
+                    root.action_two()
+                    root.dismiss()
+
+<DualRowPopup>:
+    title: "Details"
+    font_size: 50
+    size_hint: 0.7, 0.6
+    auto_dismiss: False
+    GridLayout:
+        cols:1
+        Label:
+            id: msg_title
+            text: "Message title"
+            font_size: 20
+        Label:
+            id: msg_body
+            text: "Message body"
+            font_size: 14
+        Button:
+            text:"Ok"
+            on_release:
+                root.dismiss()
+
+<LargeTrippleRowPopUp>:
+    title: "DETAILS"
+    font_size: 50
+    size_hint: 1, 0.7
+    auto_dismiss: False
+    GridLayout:
+        cols: 1
+        Label:
+            id: msg_title
+            text: "title"
+            font_size: 20
+        Label:
+            id: msg_body
+            text: "Message"
+            font_size: 13
+        Label:
+            text: msg_extra
+            font_size: 13
+        Button:
+            text:"Ok"
+            on_release:
+                root.dismiss()

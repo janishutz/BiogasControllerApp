@@ -1,0 +1,37 @@
+<AboutScreen>:
+    name: "about"
+    canvas.before:
+        Color:
+            rgba: (10,10,10,0.1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    GridLayout:
+        cols: 1
+        Label:
+            text: "About"
+            font_size: 40
+            color: (0, 113, 0, 1)
+            bold: True
+        FloatLayout:
+            GridLayout:
+                pos_hint: {"x":0.05, "y":0.05}
+                size_hint: 0.9, 0.9
+                cols: 3
+                Button:
+                    text: "Back"
+                    background_color: (255,0,0,0.6)
+                    on_release:
+                        app.root.current = "home"
+                        root.manager.transition.direction = "up"
+                Button:
+                    text: "Report a\nBug"
+                    background_color: (255,0,0,0.6)
+                    on_release:
+                        root.report_issue()
+                Button:
+                    text: "Credits"
+                    background_color: (255,0,0,0.6)
+                    on_release:
+                        app.root.current = "credits"
+                        root.manager.transition.direction = "left"

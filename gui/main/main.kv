@@ -1,0 +1,89 @@
+<MainScreen>:
+    on_pre_enter: root.reset()
+    name: "main"
+    canvas.before:
+        Color:
+            rgba: (10,10,10,0.1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    GridLayout:
+    FloatLayout:
+        Label:
+            pos_hint: {"y":0.4}
+            text: "READOUT"
+            font_size: 40
+            color: (0, 113, 0, 1)
+            bold: True
+        GridLayout:
+            cols:4
+            size_hint: 0.8, 0.3
+            pos_hint: {"x":0.1, "y":0.4}
+            Label:
+                text: "Sensor 1: "
+                font_size: 20
+            Label:
+                id: sensor1
+                text: ""
+            Label:
+                text: "Sensor 2: "
+                font_size: 20
+            Label:
+                id: sensor2
+                text: ""
+            Label:
+                text: "Sensor 3: "
+                font_size: 20
+            Label:
+                id: sensor3
+                text: ""
+            Label:
+                text: "Sensor 4: "
+                font_size: 20
+            Label:
+                id: sensor4
+                text: ""
+        Button:
+            text: "Connect"
+            size_hint: 0.2, 0.1
+            pos_hint: {"x": 0.5, "y": 0.05}
+            background_color: (255, 0, 0, 0.6)
+            on_release:
+                root.start()
+        Button:
+            text: "Disconnect"
+            size_hint: 0.2, 0.1
+            pos_hint: {"x": 0.7, "y": 0.05}
+            background_color: (255, 0, 0, 0.6)
+            on_release:
+                root.end()
+        Button:
+            text: "Back"
+            size_hint: 0.3, 0.1
+            pos_hint: {"x":0.05, "y":0.05}
+            background_color: (255, 0, 0, 0.6)
+            on_release:
+                root.end()
+                app.root.current = "home"
+                root.manager.transition.direction = "left"
+        ToggleButton:
+            id: mode_selector
+            size_hint: 0.15, 0.1
+            pos_hint: {"x":0.1, "y":0.2}
+            text: "Normal Mode" if self.state == "normal" else "Fast Mode"
+            on_text: root.switch_mode(mode_selector.text)
+            background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
+        Button:
+            text: "Configuration"
+            size_hint: 0.15, 0.1
+            pos_hint: {"x":0.7, "y":0.2}
+            background_color: (255, 0, 0, 0.6)
+            on_release:
+                root.end()
+                app.root.current = "program"
+                root.manager.transition.direction = "down"
+        Label:
+            id: status
+            text: "Status will appear here"
+            font_size: 10
+            pos_hint: {"x":0.4, "y": 0.3}

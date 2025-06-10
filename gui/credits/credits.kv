@@ -1,0 +1,27 @@
+<CreditsScreen>:
+    name: "credits"
+    canvas.before:
+        Color:
+            rgba: (10,10,10,0.1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    FloatLayout:
+        Button:
+            text: "back"
+            size_hint: 0.4, 0.2
+            pos_hint: {"x":0.3, "y":0.1}
+            on_release:
+                app.root.current = "about"
+                root.manager.transition.direction = "right"
+        GridLayout:
+            cols:1
+            pos_hint:{"x":0.05, "y":0.35}
+            size_hint: 0.9, 0.5
+            Label:
+                text: "This is a controller sofware that helps you reprogram and monitor the micro-controller used in ENATECH at KSWO"
+            Label:
+                text: "Written by:                   Janis Hutz\nDesigned by:                Janis Hutz\nDesign language:         Kivy"
+            Label:
+                text: "This software is free Software licensed under the GPL V3 (GNU General Public License) and as such comes with absolutely no warranty. In return, you can use, modify, distribute or use any of the code of this software in your own project, if you reuse the same license. For more infos, you can find a copy of this license in the project folder."
+                text_size: self.width, None
