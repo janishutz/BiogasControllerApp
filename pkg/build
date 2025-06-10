@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# Build deb
-dpkg-deb --build deb
-
-
-# Build rpm
-rpmbuild -ba ./rpm-build/SPECS/biogascontrollerapp.spec

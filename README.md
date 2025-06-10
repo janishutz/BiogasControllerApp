@@ -36,10 +36,17 @@ If you are here to read the code, the files you are most likely looking for can 
 - Focus on code quality and readability as well as stability
 - Tips to resolve errors directly in the app
 - The app is still maintained and as such known issues will be resolved
-- Installer for Windows, deb, rpm and arch package available
 - Clean UI focusing on ease of use
 - Documented code so you can more easily understand what is happening
 
+# Installation
+To install it, navigate to the releases tab on the right hand side. Click the current release, scroll down to assets and select the version appropriate for your operating system.
+
+That means:
+- on Windows, select BiogasControllerApp-Windows.zip
+- on Linux, you may download the tarball or you may also download the `install-linux.sh` script to automatically install it for you. Just note: You need to enable execute permissions for the file!
+
+Compared to older versions, the new BiogasControllerApp doesn't install itself as an app and only resides in a folder where you can launch it using the executable or the `launch.sh` script.
 
 # Issues
 If you encounter any bugs or other weird behaviour, please open an issue on this GitHub repository. 
@@ -48,19 +55,19 @@ If you encounter any bugs or other weird behaviour, please open an issue on this
 You may find documentation for this project in its wiki here on GitHub. The code is also documented with explanations what it does
 
 # Officially Supported OS
-- Microsoft Windows 10, 11 (through my installer, may though support older Versions but this is not verified. Open an issue if you have managed to run it on an older version of Windows)
+- Microsoft Windows 10, 11 (through the provided compiled package, might work on older versions as well)
 - Microsoft Windows XP, Vista, 7, 8, 10, 11 (through running the package with Python yourself)
 - MacOS 10.9 (Mavericks) or later (required by Python)
-- GNU/Linux: All distros that support Python 3.8 or later
+- GNU/Linux: All distros that support Python 3.8 or later (use `install-linux.sh` to install and `launch.sh` to launch for convenience)
 - FreeBSD: If you have Pyhton 3.8 or later installed 
 
 ## Dependencies
 Only needed if you run with python directly
-- Python 3.10 - 3.12 (only tested on this version, but should work down to at least 3.8 and with the latest versions)
-- kivy
+- Python 3.10 - latest (only tested on this version, but should work down to at least 3.8)
+- kivy[base]
 - pyserial
 
-To install them, run `pip install -r requirements.txt`
+To install them, run `pip install -r requirements.txt` in the `biogascontrollerapp/` directory
 
 # Contributing
 If you wish to contribute to this project, please fork this repository, create a new branch in your fork, make your changes and open a pull request in this repo. 

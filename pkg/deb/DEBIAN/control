@@ -1,7 +1,0 @@
-Package: biogascontrollerapp
-Version: 3.0
-Section: education
-Priority: optional
-Architecture: amd64
-Maintainer: Janis Hutz <development@janishutz.com>
-Description: Utility Software to control the Biogas plant of ENATECH at KSWO
