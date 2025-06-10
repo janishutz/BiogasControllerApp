@@ -1,7 +1,7 @@
 #!/bin/sh
 
 use_venv="y"
-if [[ -f ./biogascontrollerapp/.venv/bin/activate ]]; then
+if [[ -f ./.venv/bin/activate ]]; then
     if [[ "$SHELL" == "fish" ]]; then
         source ./.venv/bin/activate.fish
     elif [[ "$SHELL" == "csh" ]]; then
@@ -15,5 +15,4 @@ if [[ -f ./biogascontrollerapp/.venv/bin/activate ]]; then
     fi
 fi
 
-cd ./biogascontrollerapp/
 python biogascontrollerapp.py

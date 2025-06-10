@@ -33,7 +33,7 @@ use_venv=$(echo "$use_venv" | tr '[:upper:]' '[:lower:]')
 
 echo "\n => Checking for repo..."
 
-if [[ -f ./biogascontrollerapp/biogascontrollerapp.py ]]; then
+if [[ -f ./biogascontrollerapp.py ]]; then
     echo "\n  -> Data found, not downloading"
 else
     do_download=""
@@ -63,10 +63,6 @@ else
 fi
 
 # We are now guaranteed to be in the base directory of the repo
-
-# cd into biogascontrollerapp directory
-cd ./biogascontrollerapp/
-
 # Set up venv if selected
 if [[ "$use_venv" == "y" || "$use_venv" == "" ]]; then
     python -m venv .venv

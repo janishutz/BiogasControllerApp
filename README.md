@@ -28,7 +28,7 @@
 
 BiogasControllerApp has just received a major rewrite, where I focused on code-readability, documentation and stability. The documentation in the code is aimed at beginners and does contain some unnecessary extra comments
 
-If you are here to read the code, the files you are most likely looking for can be found in the `biogascontrollerapp/lib` folder. If you want to understand and have a look at all of the application, start with the `biogascontrollerapp.py` file in the `biogascontrollerapp` folder
+If you are here to read the code, the files you are most likely looking for can be found in the `lib` folder. If you want to understand and have a look at all of the application, start with the `biogascontrollerapp.py` file
 
 # Features
 - Read data the microcontroller in ENATECH sends
@@ -67,7 +67,7 @@ Only needed if you run with python directly
 - kivy[base]
 - pyserial
 
-To install them, run `pip install -r requirements.txt` in the `biogascontrollerapp/` directory
+To install them, run `pip install -r requirements.txt`
 
 # Contributing
 If you wish to contribute to this project, please fork this repository, create a new branch in your fork, make your changes and open a pull request in this repo. 
