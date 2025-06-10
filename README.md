@@ -6,7 +6,6 @@
 <div id="badges" align="center">
     <img src="https://img.shields.io/github/license/janishutz/BiogasControllerApp.svg">
     <img src="https://img.shields.io/github/repo-size/janishutz/BiogasControllerApp.svg">
-    <img src="https://img.shields.io/tokei/lines/github/janishutz/BiogasControllerApp">
     <img src="https://img.shields.io/github/languages/top/janishutz/BiogasControllerApp">
     <img src="https://img.shields.io/github/directory-file-count/janishutz/BiogasControllerApp.svg">
     <br>
@@ -16,10 +15,9 @@
     <img alt="GitHub forks" src="https://img.shields.io/github/forks/janishutz/BiogasControllerApp">
     <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/janishutz/BiogasControllerApp">
     <br>
-    <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/janishutz/BiogasControllerApp/total?label=Downloads (total)">
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/downloads/janishutz/BiogasControllerApp/latest/total?label=Downloads (latest)">
+    <img alt="GitHub downloads all releases" src="https://img.shields.io/github/downloads/janishutz/BiogasControllerApp/total?label=Downloads (total)">
+    <img alt="GitHub downloads release (latest release)" src="https://img.shields.io/github/downloads/janishutz/BiogasControllerApp/latest/total?label=Downloads (latest)">
     <img src="https://img.shields.io/github/release/janishutz/BiogasControllerApp.svg">
-    <img src="https://img.shields.io/github/package-json/v/janishutz/BiogasControllerApp.svg?label=Development Version">
 </div>
 
 <div id="donate" align="center">
