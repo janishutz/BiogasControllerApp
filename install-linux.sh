@@ -31,17 +31,19 @@ use_venv=""
 read -p "Install dependencies in a virtual environment? (Y/n) " use_venv
 use_venv=$(echo "$use_venv" | tr '[:upper:]' '[:lower:]')
 
-echo "\n => Checking for repo..."
+echo "
+  => Checking for repo...
+"
 
 if [[ -f ./biogascontrollerapp.py ]]; then
-    echo "\n  -> Data found, not downloading"
+    echo "  -> Data found, not downloading"
 else
     do_download=""
     read -p "  -> Data not found, okay to download? (Y/n) " do_download
     do_download=$(echo "$do_download" | tr '[:upper:]' '[:lower:]')
     if [[ "$do_download" == "y" || "$do_download" == "" ]]; then
         # Check if wget is installed
-        if [[ !command -v wget >/dev/null 2>&1 ]]; then
+        if !command -v wget >/dev/null 2>&1; then
             echo "wget unavailable. Please install using your distribution's package manager or manually download the repo from GitHub releases"
             echo 1
         fi
@@ -53,9 +55,10 @@ else
         tar -xf ./biogascontrollerapp-linux.tar.gz
 
         # Remove tarball (to keep it clean)
-        rm ./biogascontrollerapp.tar.gz
+        rm ./biogascontrollerapp-linux.tar.gz
+        mv dist biogascontrollerapp-linux
 
-        cd biogascontrollerapp/
+        cd biogascontrollerapp-linux/
     else
         echo "Please download the repo manually and execute the script inside the downloaded repo from GitHub releases"
         exit 1
@@ -74,7 +77,7 @@ if [[ "$use_venv" == "y" || "$use_venv" == "" ]]; then
         source ./.venv/bin/activate
     fi
         
-    if [[ !command -v deactivate >/dev/null 2>&1 ]]; then
+    if !command -v deactivate >/dev/null 2>&1; then
         echo "Virtual environment could not be activated.
         You may install the dependencies by changing to the biogascontrollerapp directory and running
         pip install -r requirements.txt"

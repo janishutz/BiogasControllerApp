@@ -10,7 +10,7 @@ if [[ -f ./.venv/bin/activate ]]; then
         source ./.venv/bin/activate
     fi
         
-    if [[ !command -v deactivate >/dev/null 2>&1 ]]; then
+    if !command -v deactivate >/dev/null 2>&1; then
         echo "Virtual environment could not be activated. Trying to run anyway"
     fi
 fi
