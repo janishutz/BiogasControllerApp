@@ -41,7 +41,8 @@ class Instructions:
         while time.time() - start < 5:
             # If the decoded ascii character is equal to the next expected character, move pointer right by one
             # If not, jump back to start
-            if decoder.decode_ascii(self._com.receive(1)) == sequence[pointer]:
+            data = decoder.decode_ascii(self._com.receive(1));
+            if data == sequence[pointer]:
                 pointer += 1
             else:
                 pointer = 0
@@ -53,7 +54,7 @@ class Instructions:
         # If we time out, which is the only way in which this code can be reached, return False
         return False
 
-    # Used to hook to the main data stream, as that hooking mechanism is differen
+    # Used to hook to the main data stream, as that hooking mechanism is different
     def hook_main(self) -> bool:
         # Record start time to respond to timeout
         start = time.time()

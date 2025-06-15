@@ -58,6 +58,8 @@ class ProgramScreen(Screen):
 
                 # Add it to the config
                 config.append(config_sensor_i)
+
+            self._set_ui(config)
         else:
             TwoActionPopup().open(
                 "Failed to connect to micro-controller, retry?",
@@ -100,8 +102,9 @@ class ProgramScreen(Screen):
         else:
             try:
                 self._instructions.change_config(data)
-            except:
+            except Exception as e:
                 SingleRowPopup().open("Could not save data!")
+                return
             SingleRowPopup().open("Data saved successfully")
 
 

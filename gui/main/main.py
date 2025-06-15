@@ -1,5 +1,6 @@
 from ctypes import ArgumentError
 from time import time
+from types import prepare_class
 from typing import List, override
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
@@ -73,14 +74,15 @@ class ReaderThread(threading.Thread):
                     data.append(
                         f"Tadc: {
                             self._decoder.decode_int(received[12 * i:12 * i + 4])
-                        }\nTemperature: {
-                            self._decoder.decode_float(received[12 * i + 5:12 * i + 11])
-                        }\nDuty-Cycle: {
-                            self._decoder.decode_float_long(received[48 + 5 * i: 52 + 5 * i]) / 65535.0 * 100
+                        }\nTemp: {
+                            round(self._decoder.decode_float(received[12 * i + 5:12 * i + 11]) * 1000) / 1000
+                        }°C\nDC: {
+                            round((self._decoder.decode_float_long(received[48 + 5 * i: 52 + 5 * i]) / 65535.0 * 100) * 1000) / 1000
                         }%"
                     )
                 # Calculate the frequency of updates
-                data.append(str(1 / (time() - start_time)))
+                data.append(str(round((1 / (time() - start_time)) * 1000) / 1000) + " Hz")
+                synced_queue.put(data)
         else:
             # Send error message to the UI updater
             synced_queue.put(["ERR_HOOK"])
@@ -105,25 +107,36 @@ class MainScreen(Screen):
         self._event = None
 
         # Prepare the reader thread
-        self._reader = ReaderThread()
-        self._reader.setDaemon(True)
-        self._reader.set_com(com)
+        self._prepare_reader()
+        self._has_run = False
         self._has_connected = False
 
         # Call the constructor for the Screen class
         super().__init__(**kw)
 
+    def _prepare_reader(self):
+        self._reader = ReaderThread()
+        self._reader.setDaemon(True)
+        self._reader.set_com(self._com)
+
     # Start the connection to the micro-controller to read data from it.
     # This also now starts the reader thread to continuously read out data
     def start(self):
+        # Prevent running multiple times
+        if self._has_connected:
+            return
+
         self.ids.status.text = "Connecting..."
         if self._com.connect():
             print("Acquired connection")
             self._has_connected = True
+            self._has_run = True
+            if self._has_run:
+                self._prepare_reader()
             # Start communication
             self._reader.start()
             print("Reader has started")
-            Clock.schedule_interval(self._update_screen, 0.5)
+            self._event = Clock.schedule_interval(self._update_screen, 0.5)
         else:
             self.ids.status.text = "Connection failed"
             TwoActionPopup().open(
@@ -142,6 +155,11 @@ class MainScreen(Screen):
             if self._event != None:
                 self._event.cancel()
             self._reader.stop()
+            try:
+                self._reader.join()
+            except:
+                pass
+
             try:
                 self._com.send("NM")
             except:
@@ -185,7 +203,7 @@ class MainScreen(Screen):
     # Switch the mode for the micro-controller
     def switch_mode(self, new_mode: str):
         # Store if we have been connected to the micro-controller before mode was switched
-        was_connected = self._reader.is_alive
+        was_connected = self._has_connected
 
         # Disconnect from the micro-controller
         self.end()
@@ -201,6 +219,7 @@ class MainScreen(Screen):
             SingleRowPopup().open("Failed to switch modes")
             return
 
+        self.ids.status.text = "Mode set"
         # If we have been connected, reconnect
         if was_connected:
             self.start()
