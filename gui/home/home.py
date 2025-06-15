@@ -1,4 +1,3 @@
-from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from gui.popups.popups import DualRowPopup, QuitPopup, TwoActionPopup
