@@ -1,8 +1,8 @@
-from kivy.uix.screenmanager import Screen
+from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 
 
-class CreditsScreen(Screen):
+class CreditsScreen(MDScreen):
     pass
 
 Builder.load_file('./gui/credits/credits.kv')

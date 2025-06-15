@@ -1,4 +1,5 @@
-from kivy.uix.screenmanager import Screen
+from kivymd.app import MDApp
+from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from gui.popups.popups import DualRowPopup, QuitPopup, TwoActionPopup
 from lib.com import ComSuperClass
@@ -21,7 +22,7 @@ information = {
 
 
 # This is the launch screen, i.e. what you see when you start up the app
-class HomeScreen(Screen):
+class HomeScreen(MDScreen):
     def __init__(self, com: ComSuperClass, **kw):
         self._com = com;
         super().__init__(**kw)

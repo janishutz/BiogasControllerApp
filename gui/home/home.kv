@@ -1,40 +1,36 @@
 <HomeScreen>:
     name: "home"
-    canvas.before:
-        Color:
-            rgba: (20,20,20,0.2)
-        Rectangle:
-            size: self.size
-            pos: self.pos
     GridLayout:
         cols:1
-        Label:
+        MDLabel:
             text: "BiogasanlageControllerApp"
             font_size: 50
-            color: (0, 113, 0, 1)
-            bold:True
-            italic:True
+            halign: 'center'
+            valign: 'center'
+            bold: True
+            italic: True
+            theme_text_color: 'Secondary'
         FloatLayout:
             GridLayout:
                 cols: 2
                 size_hint: 0.8, 0.8
                 pos_hint: {"x": 0.1, "y": 0.1}
-                Button:
+                MDRaisedButton:
+                    style: "outlined"
+                    on_release: root.start()
                     text: "Start"
-                    background_color: (0, 0, 0, 0.6)
                     font_size: 30
-                    on_release:
-                        root.start()
                 Button:
                     text: "Quit"
                     background_color: (0, 0, 0, 0.6)
                     font_size: 30
                     on_release:
                         root.quit()
-            Label:
+            MDLabel:
                 text: "You are running version V3.0.1"
                 font_size: 13
-                pos_hint: {"y": -0.45, "x":0.05}
+                pos_hint: {"y": -0.45, "x":0}
+                halign: 'center'
             Button:
                 text: "About"
                 font_size: 13

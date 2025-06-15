@@ -54,7 +54,7 @@ else:
 # Load kivy modules. Kivy is the UI framework used. See https://kivy.org
 # from kivy.core.window import Window, Config
 from kivy.uix.screenmanager import ScreenManager
-from kivy.app import App
+from kivymd.app import MDApp
 
 
 # Store the current app version
@@ -77,7 +77,7 @@ from gui.main.main import MainScreen
 #          │                 Screen Manager                 │
 #          ╰────────────────────────────────────────────────╯
 # Kivy uses a screen manager to manage pages in the application
-class BiogasControllerApp(App):
+class BiogasControllerApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.screen_manager = ScreenManager()
@@ -87,6 +87,12 @@ class BiogasControllerApp(App):
         com: ComSuperClass = Com()
         if config["Dev"]["use_test_library"] == "True":
             com = lib.test.com.Com()
+
+        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.primary_palette = "Green"
+        self.theme_cls.accent_palette = "Lime"
+        self.theme_cls.theme_style_switch_animation = True
+        self.theme_cls.theme_style_switch_animation_duration = 0.8
 
         self.icon = "./BiogasControllerAppLogo.png"
         self.title = "BiogasControllerApp-" + app_version

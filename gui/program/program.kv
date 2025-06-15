@@ -1,12 +1,7 @@
 <ProgramScreen>:
     name: "program"
     on_enter: self.config_loader = root.load_config()
-    canvas.before:
-        Color:
-            rgba: (10,10,10,0.1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
+    md_bg_color: app.theme_cls.primary_color
     FloatLayout:
         Label:
             text: "Configuration"

@@ -1,5 +1,5 @@
 from typing import List
-from kivy.uix.screenmanager import Screen
+from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from lib.decoder import Decoder
 from lib.instructions import Instructions
@@ -13,7 +13,7 @@ from kivy.clock import Clock
 name_map = ["a", "b", "c", "t"]
 
 
-class ProgramScreen(Screen):
+class ProgramScreen(MDScreen):
     def __init__(self, com: ComSuperClass, **kw):
         self._com = com
         self._instructions = Instructions(com)

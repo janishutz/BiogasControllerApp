@@ -1,8 +1,7 @@
 from ctypes import ArgumentError
 from time import time
-from types import prepare_class
 from typing import List, override
-from kivy.uix.screenmanager import Screen
+from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from gui.popups.popups import SingleRowPopup, TwoActionPopup, empty_func
 from kivy.clock import Clock, ClockEvent
@@ -96,7 +95,7 @@ class ReaderThread(threading.Thread):
 #          │                Main App Screen                 │
 #          ╰────────────────────────────────────────────────╯
 # This is the main screen, where you can read out data
-class MainScreen(Screen):
+class MainScreen(MDScreen):
     _event: ClockEvent
 
     # The constructor if this class takes a Com object to share one between all screens
