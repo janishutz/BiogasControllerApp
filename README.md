@@ -37,6 +37,11 @@ That means:
 
 Compared to older versions, the new BiogasControllerApp doesn't install itself as an app and only resides in a folder where you can launch it using the executable or the `launch.sh` script.
 
+## Troubleshooting
+If you get a warning from Windows, the reason for this is that this app bundle is unsigned (since a signing certificate is about USD 350/year), so it might warn you about that. You can safely click "Run anyway" or the like to bypass that problem. 
+
+If this makes you uncomfortable, you may simply install python and install the necessary dependencies (see below) and run the app using Python.
+
 # Features
 - Read data the microcontroller in ENATECH sends
 - Configure the microcontroller (Coefficients & Temperature). Old settings will be pre-loaded
