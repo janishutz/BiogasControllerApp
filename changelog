@@ -1,11 +1,27 @@
 ***CHANGELOG***
+V3.1.0
+- Completely redesigned User Interface using KivyMD
+- Added config option for themes
 
-V3.0-beta
-- Redesigned GUI
+V3.0.1
+- Install script fixes
+- Packaging fixes
+
+
+V3.0.0
+- Small UI fixes
 - Consolidated multiple previously separate screens
 - Completely rewritten backend
 - Improved stability
 - Cleaned, documented code
+- Reduced overhead of connecting
+- Improved hooking reliability
+- Removed installer, simpler setup now possible
+- Removed official MacOS support as it didn't really work before anyway
+- Added additional config options
+- Improved linguistics
+- Bugfixes
+
 
 OLD VERSIONS
 ------------

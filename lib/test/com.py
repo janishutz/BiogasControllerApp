@@ -50,7 +50,7 @@ class SensorConfig:
 
 class Com(ComSuperClass):
     def __init__(
-        self, baudrate: int = 19200, filters: Optional[list[str]] = None
+        self, fail_sim: int, baudrate: int = 19200, filters: Optional[list[str]] = None
     ) -> None:
         # Calling the constructor of the super class to assign defaults
         print("\n\nWARNING: Using testing library for communication!\n\n")
@@ -62,6 +62,7 @@ class Com(ComSuperClass):
 
         self.__reconf_sensor = 0
         self.__reconf_step = 0
+        self.__fail_sim = fail_sim
 
         self.__config: List[SensorConfig] = [
             SensorConfig(),
@@ -78,11 +79,11 @@ class Com(ComSuperClass):
         self._port_override = override
 
     def get_comport(self) -> str:
-        return "test" if self._port_override != "" else self._port_override
+        return "Sim" if self._port_override == "" else self._port_override
 
     def connect(self) -> bool:
-        # Randomly return false in 1 in 20 ish cases
-        if random.randint(0, 20) == 1:
+        # Randomly return false in 1 in fail_sim ish cases
+        if random.randint(0, self.__fail_sim) == 0:
             print("Simulating error to connect")
             return False
         return True

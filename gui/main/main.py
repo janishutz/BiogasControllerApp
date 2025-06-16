@@ -3,8 +3,9 @@ from time import time
 from typing import List, override
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
-from gui.popups.popups import SingleRowPopup, TwoActionPopup, empty_func
 from kivy.clock import Clock, ClockEvent
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 import queue
 import threading
 
@@ -53,7 +54,7 @@ class ReaderThread(threading.Thread):
         # Hook to output stream
         if self._instructions.hook_main():
             # We are now hooked to the stream (i.e. data is synced)
-            synced_queue.put(["HOOK"])
+            synced_queue.put(["HOOK", self._com.get_comport()])
 
             # making it exit using the stop function
             while self._run:
@@ -70,17 +71,22 @@ class ReaderThread(threading.Thread):
                 for i in range(4):
                     # The slicing that happens here uses offsets automatically calculated from the sensor id
                     # This allows for short code
-                    data.append(
-                        f"Tadc: {
-                            self._decoder.decode_int(received[12 * i:12 * i + 4])
-                        }\nTemp: {
-                            round(self._decoder.decode_float(received[12 * i + 5:12 * i + 11]) * 1000) / 1000
-                        }°C\nDC: {
-                            round((self._decoder.decode_float_long(received[48 + 5 * i: 52 + 5 * i]) / 65535.0 * 100) * 1000) / 1000
-                        }%"
-                    )
+                    try:
+                        data.append(
+                            f"Tadc: {
+                                self._decoder.decode_int(received[12 * i:12 * i + 4])
+                            }\nTemp: {
+                                round(self._decoder.decode_float(received[12 * i + 5:12 * i + 11]) * 1000) / 1000
+                            }°C\nDC: {
+                                round((self._decoder.decode_float_long(received[48 + 5 * i: 52 + 5 * i]) / 65535.0 * 100) * 1000) / 1000
+                            }%"
+                        )
+                    except:
+                        data.append("Bad data")
                 # Calculate the frequency of updates
-                data.append(str(round((1 / (time() - start_time)) * 1000) / 1000) + " Hz")
+                data.append(
+                    str(round((1 / (time() - start_time)) * 1000) / 1000) + " Hz"
+                )
                 synced_queue.put(data)
         else:
             # Send error message to the UI updater
@@ -104,6 +110,30 @@ class MainScreen(MDScreen):
         # Set some variables
         self._com = com
         self._event = None
+        self._fast_mode = False
+
+        self.connection_error_dialog = MDDialog(
+            title="Connection",
+            text="Failed to connect. Do you wish to retry?",
+            buttons=[
+                MDFlatButton(
+                    text="Cancel",
+                    on_release=lambda _: self.connection_error_dialog.dismiss(),
+                ),
+                MDFlatButton(text="Retry", on_release=lambda _: self.start()),
+            ],
+        )
+
+        self.mode_switch_error_dialog = MDDialog(
+            title="Mode Switch",
+            text="Failed to change mode. Please try again",
+            buttons=[
+                MDFlatButton(
+                    text="Ok",
+                    on_release=lambda _: self.mode_switch_error_dialog.dismiss(),
+                ),
+            ],
+        )
 
         # Prepare the reader thread
         self._prepare_reader()
@@ -115,36 +145,31 @@ class MainScreen(MDScreen):
 
     def _prepare_reader(self):
         self._reader = ReaderThread()
-        self._reader.setDaemon(True)
+        self._reader.daemon = True
         self._reader.set_com(self._com)
 
     # Start the connection to the micro-controller to read data from it.
     # This also now starts the reader thread to continuously read out data
     def start(self):
         # Prevent running multiple times
+        self.connection_error_dialog.dismiss()
         if self._has_connected:
             return
 
         self.ids.status.text = "Connecting..."
         if self._com.connect():
-            print("Acquired connection")
+            print("[ COM ] Connection Acquired")
             self._has_connected = True
             self._has_run = True
             if self._has_run:
                 self._prepare_reader()
             # Start communication
             self._reader.start()
-            print("Reader has started")
+            print("[ COM ] Reader has started")
             self._event = Clock.schedule_interval(self._update_screen, 0.5)
         else:
             self.ids.status.text = "Connection failed"
-            TwoActionPopup().open(
-                "Failed to connect. Do you want to retry?",
-                "Cancel",
-                empty_func,
-                "Retry",
-                self.start,
-            )
+            self.connection_error_dialog.open()
 
     # End connection to micro-controller and set it back to normal mode
     def end(self, set_msg: bool = True):
@@ -166,10 +191,12 @@ class MainScreen(MDScreen):
             self._com.close()
             if set_msg:
                 self.ids.status.text = "Connection terminated"
+                self.ids.port.text = "Port: Not connected"
+            self._has_connected = False
             print("Connection terminated")
 
     # A helper function to update the screen. Is called on an interval
-    def _update_screen(self, dt):
+    def _update_screen(self, _):
         update = []
         try:
             update = synced_queue.get_nowait()
@@ -182,8 +209,10 @@ class MainScreen(MDScreen):
             if update[0] == "ERR_HOOK":
                 self.ids.status.text = "Hook failed"
                 self.end(False)
-            elif update[0] == "HOOK":
+        if len(update) == 2:
+            if update[0] == "HOOK":
                 self.ids.status.text = "Connected to controller"
+                self.ids.port.text = "Port: " + update[1]
         else:
             self.ids.sensor1.text = update[0]
             self.ids.sensor2.text = update[1]
@@ -198,9 +227,10 @@ class MainScreen(MDScreen):
         self.ids.sensor3.text = ""
         self.ids.sensor4.text = ""
         self.ids.status.text = "Status will appear here"
+        self.ids.port.text = "Port: Not connected"
 
     # Switch the mode for the micro-controller
-    def switch_mode(self, new_mode: str):
+    def switch_mode(self):
         # Store if we have been connected to the micro-controller before mode was switched
         was_connected = self._has_connected
 
@@ -210,12 +240,12 @@ class MainScreen(MDScreen):
 
         # Try to set the new mode
         try:
-            if new_mode == "Normal Mode":
+            if self._fast_mode:
                 self._com.send("NM")
             else:
                 self._com.send("FM")
         except:
-            SingleRowPopup().open("Failed to switch modes")
+            self.mode_switch_error_dialog.open()
             return
 
         self.ids.status.text = "Mode set"

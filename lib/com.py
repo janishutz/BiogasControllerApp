@@ -6,16 +6,23 @@ import serial.tools.list_ports
 
 
 class ComSuperClass(ABC):
-    def __init__(self, baudrate: Optional[int] = 19200, filters: Optional[list[str]] = None) -> None:
+    def __init__(
+        self, baudrate: Optional[int] = 19200, filters: Optional[list[str]] = None
+    ) -> None:
         self._serial: Optional[serial.Serial] = None
-        self._filters = filters if filters != None else [ 'USB-Serial Controller', 'Prolific USB-Serial Controller' ]
-        self._port_override = ''
+        self._filters = (
+            filters
+            if filters != None
+            else ["USB-Serial Controller", "Prolific USB-Serial Controller"]
+        )
+        self._port_override = ""
         self._baudrate = baudrate if baudrate != None else 19200
         self._err = None
 
     def set_port_override(self, override: str) -> None:
         """Set the port override, to disable port search"""
-        self._port_override = override
+        if override != "" and override != "None":
+            self._port_override = override
 
     def get_error(self) -> serial.SerialException | None:
         return self._err
@@ -58,7 +65,7 @@ class Com(ComSuperClass):
 
     def get_comport(self) -> str:
         """Find the comport the microcontroller has attached to"""
-        if self._port_override != '':
+        if self._port_override != "":
             return self._port_override
 
         # Catch all errors and simply return an empty string if search unsuccessful
@@ -80,7 +87,7 @@ class Com(ComSuperClass):
         comport = self.get_comport()
 
         # Comport search returns empty string if search unsuccessful
-        if comport == '':
+        if comport == "":
             try:
                 self._serial = serial.Serial(comport, self._baudrate, timeout=5)
             except serial.SerialException as e:
@@ -108,7 +115,7 @@ class Com(ComSuperClass):
         if self._serial != None:
             return self._serial.read(byte_count)
         else:
-            raise Exception('ERR_CONNECTING')
+            raise Exception("ERR_CONNECTING")
 
     def send(self, msg: str) -> None:
         """Send a string over serial connection. Will open a connection if none is available"""
@@ -116,12 +123,12 @@ class Com(ComSuperClass):
         if self._serial != None:
             self._serial.write(msg.encode())
         else:
-            raise Exception('ERR_CONNECTING')
+            raise Exception("ERR_CONNECTING")
 
     def send_float(self, msg: float) -> None:
         """Send a float number over serial connection"""
         self._connection_check()
         if self._serial != None:
-            self._serial.write(bytearray(struct.pack('>f', msg))[0:3])
+            self._serial.write(bytearray(struct.pack(">f", msg))[0:3])
         else:
-            raise Exception('ERR_CONNECTING')
+            raise Exception("ERR_CONNECTING")

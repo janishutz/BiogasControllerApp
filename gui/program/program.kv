@@ -1,126 +1,123 @@
 <ProgramScreen>:
     name: "program"
     on_enter: self.config_loader = root.load_config()
-    md_bg_color: app.theme_cls.primary_color
     FloatLayout:
-        Label:
-            text: "Configuration"
-            font_size: 40
-            color: (0, 113, 0, 1)
-            bold: True
-            pos_hint: {"y":0.4}
-        GridLayout:
-            size_hint: 0.8, 0.5
-            pos_hint: {"x":0.1, "y":0.2}
+        MDGridLayout:
+            cols: 1
+            pos_hint: {'x': 0, 'y': 0.4}
+            MDLabel:
+                text: "Configuration"
+                font_size: 40
+                halign: 'center'
+                valign: 'center'
+                pos_hint: {'center_x': 0, 'center_y': 0}
+                bold: True
+
+        MDGridLayout:
+            cols: 1
+            pos_hint: {'x': 0, 'y': 0.33}
+            MDLabel:
+                text: "Change the configuration of the microcontroller"
+                font_size: 18
+                halign: 'center'
+                valign: 'center'
+                pos_hint: {'center_x': 0, 'center_y': 0}
+                italic: True
+
+        MDGridLayout:
+            cols: 1
+            pos_hint: {'x': 0, 'y': 0.25}
+            MDLabel:
+                id: status
+                text: "Loading..."
+                font_size: 17
+                halign: 'center'
+                bold: True
+
+        MDGridLayout:
+            size_hint: 0.9, 0.5
+            spacing: 10
+            pos_hint: {"x":0.05, "y":0.2}
             cols: 4
-            Label:
-                text: "Sensor 1, a:"
-            TextInput:
+            MDTextField:
                 id: s1_a
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 1, b:"
-            TextInput:
+                hint_text: 'Sensor 1 a'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s1_b
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 1, c:"
-            TextInput:
+                hint_text: 'Sensor 1 b'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s1_c
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 1, Temp:"
-            TextInput:
+                hint_text: 'Sensor 1 c'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s1_t
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 2, a:"
-            TextInput:
+                hint_text: 'Sensor 1 Temperature'
+                on_text: root.validate_float(self)
+
+            MDTextField:
                 id: s2_a
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 2, b:"
-            TextInput:
+                hint_text: 'Sensor 2 a'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s2_b
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 2, c:"
-            TextInput:
+                hint_text: 'Sensor 2 b'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s2_c
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 2, Temp:"
-            TextInput:
+                hint_text: 'Sensor 2 c'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s2_t
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 3, a:"
-            TextInput:
+                hint_text: 'Sensor 2 Temperature'
+                on_text: root.validate_float(self)
+                
+            MDTextField:
                 id: s3_a
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 3, b:"
-            TextInput:
+                hint_text: 'Sensor 3 a'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s3_b
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 3, c:"
-            TextInput:
+                hint_text: 'Sensor 3 b'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s3_c
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 3, Temp:"
-            TextInput:
+                hint_text: 'Sensor 3 c'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s3_t
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 4, a:"
-            TextInput:
+                hint_text: 'Sensor 3 Temperature'
+                on_text: root.validate_float(self)
+
+            MDTextField:
                 id: s4_a
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 4, b:"
-            TextInput:
+                hint_text: 'Sensor 4 a'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s4_b
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 4, c:"
-            TextInput:
+                hint_text: 'Sensor 4 b'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s4_c
-                multiline: False
-                input_filter: "float"
-            Label:
-                text: "Sensor 4, Temp:"
-            TextInput:
+                hint_text: 'Sensor 4 c'
+                on_text: root.validate_float(self)
+            MDTextField:
                 id: s4_t
-                multiline: False
-                input_filter: "float"
-        Button:
+                hint_text: 'Sensor 4 Temperature'
+                on_text: root.validate_float(self)
+
+        MDFillRoundFlatButton:
+            size_hint: 0.1, 0.07
             text: "Back"
-            size_hint: 0.1, 0.1
             pos_hint: {"x":0.1, "y":0.1}
             background_color: (255, 0, 0, 0.6)
             on_release:
                 app.root.current = "main"
                 root.manager.transition.direction = "up"
-        Button:
+        MDFillRoundFlatButton:
+            size_hint: 0.15, 0.09
             text: "Save"
-            size_hint: 0.2, 0.1
             pos_hint: {"x":0.6, "y":0.1}
-            background_color: (255, 0, 0, 0.6)
             on_release:
                 root.save()

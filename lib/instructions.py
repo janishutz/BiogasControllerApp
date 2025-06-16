@@ -12,10 +12,6 @@ class Instructions:
     def __init__(self, com: ComSuperClass) -> None:
         self._com = com
 
-    # Set a port override (to use a specific COM port)
-    def set_port_override(self, override: str) -> None:
-        self._com.set_port_override(override)
-
     # Helper method to hook to the data stream according to protocol.
     # You can specify the sequence that the program listens to to sync up,
     # as an array of strings, that should each be of length one and only contain

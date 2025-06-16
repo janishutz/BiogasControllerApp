@@ -1,101 +1,124 @@
 <MainScreen>:
     on_pre_enter: root.reset()
     name: "main"
-    canvas.before:
-        Color:
-            rgba: (10,10,10,0.1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    GridLayout:
-    FloatLayout:
-        Label:
-            pos_hint: {"y":0.4}
-            text: "READOUT"
-            font_size: 40
-            color: (0, 113, 0, 1)
-            bold: True
-        GridLayout:
+    MDFloatLayout:
+        MDGridLayout:
+            cols: 1
+            pos_hint: {'x': 0, 'y': 0.4}
+            MDLabel:
+                text: "READOUT"
+                font_size: 40
+                halign: 'center'
+                valign: 'center'
+                pos_hint: {'center_x': 0, 'center_y': 0}
+                bold: True
+
+        MDGridLayout:
             cols:4
             size_hint: 0.8, 0.3
             pos_hint: {"x":0.1, "y":0.4}
-            Label:
+            MDLabel:
                 text: "Sensor 1: "
                 font_size: 20
-            Label:
+            MDLabel:
                 id: sensor1
                 text: ""
                 size_hint: 1, 1
                 halign: 'left'
                 text_size: self.size
-            Label:
+            MDLabel:
                 text: "Sensor 2: "
                 font_size: 20
-            Label:
+            MDLabel:
                 id: sensor2
                 text: ""
                 size_hint: 1, 1
                 halign: 'left'
                 text_size: self.size
-            Label:
+            MDLabel:
                 text: "Sensor 3: "
                 font_size: 20
-            Label:
+            MDLabel:
                 id: sensor3
                 text: ""
                 size_hint: 1, 1
                 halign: 'left'
                 text_size: self.size
-            Label:
+            MDLabel:
                 text: "Sensor 4: "
                 font_size: 20
-            Label:
+            MDLabel:
                 id: sensor4
                 text: ""
                 size_hint: 1, 1
                 halign: 'left'
                 text_size: self.size
-        Button:
+        MDFillRoundFlatButton:
             text: "Connect"
-            size_hint: 0.2, 0.1
-            pos_hint: {"x": 0.5, "y": 0.05}
-            background_color: (255, 0, 0, 0.6)
+            size_hint: 0.15, 0.09
+            pos_hint: {"x": 0.03, "y": 0.05}
             on_release:
                 root.start()
-        Button:
+
+        MDFillRoundFlatButton:
             text: "Disconnect"
-            size_hint: 0.2, 0.1
-            pos_hint: {"x": 0.7, "y": 0.05}
-            background_color: (255, 0, 0, 0.6)
+            size_hint: 0.15, 0.09
+            pos_hint: {"x": 0.2, "y": 0.05}
             on_release:
                 root.end()
-        Button:
+
+        MDFillRoundFlatButton:
             text: "Back"
-            size_hint: 0.3, 0.1
-            pos_hint: {"x":0.05, "y":0.05}
-            background_color: (255, 0, 0, 0.6)
+            size_hint: 0.15, 0.09
+            pos_hint: {"right": 0.95, "y":0.05}
+            md_bg_color: app.theme_cls.primary_dark
             on_release:
                 root.end()
                 app.root.current = "home"
                 root.manager.transition.direction = "left"
-        ToggleButton:
-            id: mode_selector
+
+        MDGridLayout:
+            cols: 2
             size_hint: 0.15, 0.1
-            pos_hint: {"x":0.1, "y":0.2}
-            text: "Normal Mode" if self.state == "normal" else "Fast Mode"
-            on_text: root.switch_mode(mode_selector.text)
-            background_color: (255,0,0,0.6) if self.state == "normal" else (0,0,255,0.6)
-        Button:
+            pos_hint: {"x":0.1, "y":0.15}
+            MDLabel:
+                text: "Fast Mode"
+                valign: "center"
+            MDSwitch:
+                id: mode_selector
+                on_active: root.switch_mode()
+                icon_active: "check"
+
+        MDFillRoundFlatButton:
             text: "Configuration"
-            size_hint: 0.15, 0.1
-            pos_hint: {"x":0.7, "y":0.2}
-            background_color: (255, 0, 0, 0.6)
+            size_hint: 0.1, 0.07
+            pos_hint: {"x":0.45, "y":0.06}
+            md_bg_color: app.theme_cls.accent_dark
             on_release:
                 root.end()
                 app.root.current = "program"
                 root.manager.transition.direction = "down"
-        Label:
-            id: status
-            text: "Status will appear here"
-            font_size: 10
-            pos_hint: {"x":0.4, "y": 0.3}
+
+        MDGridLayout:
+            size_hint: 0.2, None
+            spacing: 0
+            padding: 0
+            cols: 1
+            pos_hint: {'right': 0.95, 'top': 0.95}
+            MDLabel:
+                id: status
+                text: "Status will appear here"
+                font_size: 10
+                halign: 'right'
+
+        MDGridLayout:
+            size_hint: None, None
+            spacing: 0
+            padding: 0
+            cols: 1
+            pos_hint: {'right': 0.95, 'top': 0.925}
+            MDLabel:
+                id: port
+                text: "Port: Not connected"
+                font_size: 10
+                halign: 'right'

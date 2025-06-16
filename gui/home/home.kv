@@ -1,19 +1,13 @@
 <HomeScreen>:
     name: "home"
-    MDGridLayout:
-        cols:1
-        MDFloatLayout:
-            MDCard:
-                radius: 36
-                pos_hint: {"center_x": .5, "center_y": .5}
-                size_hint: .6, .8
-
-                Image:
-                    source: "BiogasControllerAppLogo.png"
-                    pos_hint: {"top": 1}
-                    radius: 36, 36, 0, 0
-                    allow_stretch: True
-                    keep_ratio: True
+    MDFloatLayout:
+        Image:
+            source: "BiogasControllerAppLogo.png"
+            pos_hint: {"top": 0.9}
+            size_hint_y: .3
+            radius: 36, 36, 0, 0
+            allow_stretch: True
+            keep_ratio: True
 
         MDGridLayout:
             cols: 1
@@ -28,32 +22,41 @@
                 pos_hint: {'center_x': 0, 'center_y': 0}
 
 
-        MDFloatLayout:
-            MDGridLayout:
-                cols: 2
-                size_hint: 0.2, 0.2
-                pos_hint: {"x": 0.4, "y": 0.3}
+        MDGridLayout:
+            spacing: 20
+            size_hint: None, None
+            size: self.minimum_size
+            cols: 2
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3 }
+            MDFillRoundFlatButton:
+                font_size: 30
+                text: "Start"
+                on_release: root.start()
 
-                MDRaisedButton:
-                    on_release: root.start()
-                    font_size: 30
-                    text: "Start"
-                    radius: [25]
-                MDRaisedButton:
-                    text: "Quit"
-                    font_size: 30
-                    on_release:
-                        root.quit()
+            MDFillRoundFlatButton:
+                text: "Quit"
+                font_size: 30
+                pos_hint: {"x": 0.7, "center_y": 0}
+                on_release: root.quit()
 
-            MDLabel:
-                text: "You are running version V3.0.1"
-                font_size: 13
-                pos_hint: {"y": -0.45, "x":0}
-                halign: 'center'
-            MDFlatButton:
-                text: "About"
-                font_size: 13
-                size_hint: 0.07, 0.06
-                pos_hint: {"x":0.01, "y":0.01}
-                on_release:
-                    root.to_about()
+        MDLabel:
+            text: "You are running version V3.1.0"
+            font_size: 13
+            pos_hint: {"y": -0.45, "x":0}
+            halign: 'center'
+
+        MDFlatButton:
+            text: "About"
+            font_size: 13
+            size_hint: 0.07, 0.06
+            pos_hint: {"x":0.01, "y":0.01}
+            on_release:
+                root.to_about()
+
+        # MDFlatButton:
+        #     text: "Change Theme"
+        #     font_size: 13
+        #     size_hint: 0.07, 0.06
+        #     pos_hint: {"right":0.99, "y":0.01}
+        #     on_release:
+        #         app.change_theme()

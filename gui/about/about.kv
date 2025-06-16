@@ -1,37 +1,52 @@
 <AboutScreen>:
     name: "about"
-    canvas.before:
-        Color:
-            rgba: (10,10,10,0.1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    GridLayout:
-        cols: 1
+    MDFloatLayout:
+        Image:
+            source: "BiogasControllerAppLogo.png"
+            pos_hint: {"top": 0.9}
+            size_hint_y: .3
+            radius: 36, 36, 0, 0
+            allow_stretch: True
+            keep_ratio: True
+
+        MDGridLayout:
+            cols: 1
+            MDLabel:
+                text: "About"
+                font_size: 40
+                halign: 'center'
+                valign: 'center'
+                bold: True
+                italic: True
+                theme_text_color: 'Secondary'
+                pos_hint: {'center_x': 0, 'center_y': 0}
+
+        MDFillRoundFlatButton:
+            pos_hint: {'x': 0.1, 'y': 0.05}
+            text: "Back"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "up"
+
+        MDFillRoundFlatButton:
+            pos_hint: {'right': 0.9, 'y': 0.05}
+            text: "Report a Bug"
+            on_release:
+                root.goto("issues")
+
+        MDFillRoundFlatButton:
+            pos_hint: {'right': 0.48, 'y': 0.05}
+            text: "Wiki"
+            on_release:
+                root.goto("wiki")
+
+        MDFillRoundFlatButton:
+            pos_hint: {'x': 0.52, 'y': 0.05}
+            text: "Repo"
+            on_release:
+                root.goto("repo")
         Label:
-            text: "About"
-            font_size: 40
-            color: (0, 113, 0, 1)
-            bold: True
-        FloatLayout:
-            GridLayout:
-                pos_hint: {"x":0.05, "y":0.05}
-                size_hint: 0.9, 0.9
-                cols: 3
-                Button:
-                    text: "Back"
-                    background_color: (255,0,0,0.6)
-                    on_release:
-                        app.root.current = "home"
-                        root.manager.transition.direction = "up"
-                Button:
-                    text: "Report a\nBug"
-                    background_color: (255,0,0,0.6)
-                    on_release:
-                        root.report_issue()
-                Button:
-                    text: "Credits"
-                    background_color: (255,0,0,0.6)
-                    on_release:
-                        app.root.current = "credits"
-                        root.manager.transition.direction = "left"
+            text: "This is a simple controller application that allows you to read data from and configure the microcontroller used in ENATECH at KSWO. It is written in Python using KivyMD as its UI framework.\n\nThis software is free Software licensed under the GNU General Public License Version 3 and as such comes with absolutely no warranty."
+            pos_hint: {'x': 0.05, 'top': 0.42}
+            text_size: self.width, None
+            size_hint: 0.9, None
