@@ -47,7 +47,7 @@ Compared to older versions, the new BiogasControllerApp doesn't install itself a
 - Documented code so you can more easily understand what is happening
 
 # Issues
-If you encounter any bugs or other weird behaviour, please open an issue on this GitHub repository. 
+If you encounter any bugs or other weird behaviour, please open an issue on this GitHub repository, contact me on my [support page](https://support.janishutz.com) or send me an [email](mailto:development@janishutz.com)
 
 # Documentation
 You may find documentation for this project in its wiki here on GitHub. The code is also documented with explanations what it does
@@ -55,15 +55,15 @@ You may find documentation for this project in its wiki here on GitHub. The code
 # Officially Supported OS
 - Microsoft Windows 10, 11 (through the provided compiled package, might work on older versions as well)
 - Microsoft Windows XP, Vista, 7, 8, 10, 11 (through running the package with Python yourself)
-- MacOS 10.9 (Mavericks) or later (required by Python)
 - GNU/Linux: All distros that support Python 3.8 or later (use `install-linux.sh` to install and `launch.sh` to launch for convenience)
 - FreeBSD: If you have Pyhton 3.8 or later installed 
 
 ## Dependencies
 Only needed if you run with python directly
 - Python 3.10 - latest (only tested on this version, but should work down to at least 3.8)
-- kivy[base]
-- pyserial
+- kivy[base]==2.3.1
+- kivymd==1.1.1
+- pyserial==3.5
 
 To install them, run `pip install -r requirements.txt`
 
