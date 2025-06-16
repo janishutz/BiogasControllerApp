@@ -4,25 +4,35 @@ from kivymd.uix.button import MDFlatButton
 from kivy.lang import Builder
 import webbrowser
 
-
+# Simple about screen
 class AboutScreen(Screen):
     def __init__(self, **kw):
+        # Prepare dialog
         self.opened_web_browser_dialog = MDDialog(
             title="Open Link",
             text="Your webbrowser has been opened. Continue there",
             buttons=[
-                MDFlatButton(text="Ok", on_release=lambda _: self.opened_web_browser_dialog.dismiss()),
+                MDFlatButton(
+                    text="Ok",
+                    on_release=lambda _: self.opened_web_browser_dialog.dismiss(),
+                ),
             ],
         )
         super().__init__(**kw)
 
     def goto(self, loc: str):
+        # Open web browser with links
         if loc == "wiki":
-            webbrowser.open('https://github.com/janishutz/BiogasControllerApp/wiki', new=2)
+            webbrowser.open(
+                "https://github.com/janishutz/BiogasControllerApp/wiki", new=2
+            )
         elif loc == "issues":
-            webbrowser.open('https://github.com/janishutz/BiogasControllerApp/issues', new=2)
+            webbrowser.open(
+                "https://github.com/janishutz/BiogasControllerApp/issues", new=2
+            )
         elif loc == "repo":
-            webbrowser.open('https://github.com/janishutz/BiogasControllerApp', new=2)
+            webbrowser.open("https://github.com/janishutz/BiogasControllerApp", new=2)
         self.opened_web_browser_dialog.open()
 
-Builder.load_file('./gui/about/about.kv')
+
+Builder.load_file("./gui/about/about.kv")

@@ -11,12 +11,17 @@ import struct
 
 from lib.com import ComSuperClass
 
+# ┌                                                ┐
+# │             Testing Module For Com             │
+# └                                                ┘
 # This file contains a Com class that can be used to test the functionality
 # even without a microcontroller. It is not documented in a particularly
 # beginner-friendly way, nor is the code written with beginner-friendliness
 # in mind. It is the most complicated piece of code of the entire application
 
-# All double __ prefixed properties and methods are not available in the actual one
+# ────────────────────────────────────────────────────────────────────
+
+# All double __ prefixed properties and methods are not available in the actual impl
 
 instruction_lut: dict[str, list[str]] = {
     "PR": ["\n", "P", "R", "\n"],
@@ -162,6 +167,7 @@ class Com(ComSuperClass):
         self.__add_ascii_char("\n")
 
     def __fill_queue(self):
+        # Simulate a full cycle
         for _ in range(4):
             self.__add_integer_as_hex(self.__generate_random_int(200))
             self.__simulated_data.put(bytes(" ", "ascii"))

@@ -112,6 +112,7 @@ class MainScreen(MDScreen):
         self._event = None
         self._fast_mode = False
 
+        # Set up Dialog for erros
         self.connection_error_dialog = MDDialog(
             title="Connection",
             text="Failed to connect. Do you wish to retry?",
@@ -144,28 +145,39 @@ class MainScreen(MDScreen):
         super().__init__(**kw)
 
     def _prepare_reader(self):
+        # Prepares the reader thread
         self._reader = ReaderThread()
         self._reader.daemon = True
         self._reader.set_com(self._com)
 
-    # Start the connection to the micro-controller to read data from it.
-    # This also now starts the reader thread to continuously read out data
+    # Small helper function that makes the UI not freeze by offloading
     def start(self):
+        Clock.schedule_once(lambda _: self._start())
+
+    # Start the connection to the micro-controller to read data from it.
+    # This also starts the reader thread to continuously read out data
+    def _start(self):
         # Prevent running multiple times
         self.connection_error_dialog.dismiss()
         if self._has_connected:
             return
 
+        # Some UI config
         self.ids.status.text = "Connecting..."
         if self._com.connect():
             print("[ COM ] Connection Acquired")
+
+            # Prevent multiple connections
             self._has_connected = True
             self._has_run = True
             if self._has_run:
                 self._prepare_reader()
+
             # Start communication
             self._reader.start()
             print("[ COM ] Reader has started")
+
+            # Schedule UI updates
             self._event = Clock.schedule_interval(self._update_screen, 0.5)
         else:
             self.ids.status.text = "Connection failed"
@@ -179,15 +191,20 @@ class MainScreen(MDScreen):
             if self._event != None:
                 self._event.cancel()
             self._reader.stop()
+
+            # Join the thread to end it safely
             try:
                 self._reader.join()
             except:
                 pass
 
+            # Go back to Normal Mode on the Controller
+            # This is so you don't accidentally forget!
             try:
                 self._com.send("NM")
             except:
                 pass
+
             self._com.close()
             if set_msg:
                 self.ids.status.text = "Connection terminated"
@@ -202,18 +219,24 @@ class MainScreen(MDScreen):
             update = synced_queue.get_nowait()
         except:
             pass
+
         if len(update) == 0:
             # There are no updates to process, don't block and simply try again next time
             return
+
         if len(update) == 1:
+            # Sync errors
             if update[0] == "ERR_HOOK":
                 self.ids.status.text = "Hook failed"
                 self.end(False)
+
         if len(update) == 2:
+            # Connection successful
             if update[0] == "HOOK":
                 self.ids.status.text = "Connected to controller"
                 self.ids.port.text = "Port: " + update[1]
         else:
+            # Update the UI
             self.ids.sensor1.text = update[0]
             self.ids.sensor2.text = update[1]
             self.ids.sensor3.text = update[2]

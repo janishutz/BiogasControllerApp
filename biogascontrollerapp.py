@@ -13,25 +13,31 @@
 # ────────────────────────────────────────────────────────────────────
 
 # Load the config file
-import configparser
 import time
+from lib.config import read_config, set_verbosity, str_to_bool
 
-config = configparser.ConfigParser()
-config.read("./config.ini")
+verbose = str_to_bool(read_config("Dev", "verbose", "False", type_to_validate="bool"))
+verbose = verbose if verbose != None else False
 
 
 # Introducing tariffs to Python imports.
 # It was too funny of an idea to miss out on
 # You can enable or disable this in the config.
 # It is disabled by default
-if config["Tariffs"]["impose_tariffs"] == "True":
+if str_to_bool(
+    read_config("Tariffs", "impose_tariffs", "False", type_to_validate="bool")
+):
     try:
         import tariff
 
         tariff.set(
             {
-                "kivy": int(config["Tariffs"]["kivy_rate"]),
-                "serial": int(config["Tariffs"]["pyserial_rate"]),
+                "kivy": int(
+                    read_config("Tariffs", "kivy_rate", "0", type_to_validate="int")
+                ),
+                "serial": int(
+                    read_config("Tariffs", "pyserial_rate", "0", type_to_validate="int")
+                ),
             }
         )
     except Exception as e:
@@ -49,7 +55,7 @@ import lib.test.com
 
 
 # Load config and disable kivy log if necessary
-if config["Dev"]["verbose"] == "True":
+if verbose:
     pass
 else:
     os.environ["KIVY_NO_CONSOLELOG"] = "1"
@@ -62,7 +68,10 @@ from kivymd.app import MDApp
 
 
 # Set Window size
-Window.size = (int(config["UI"]["width"]), int(config["UI"]["height"]))
+Window.size = (
+    int(int(read_config("UI", "width", "800", type_to_validate="int"))),
+    int(int(read_config("UI", "height", "600", type_to_validate="int"))),
+)
 
 
 #          ╭────────────────────────────────────────────────╮
@@ -79,6 +88,29 @@ from gui.main.main import MainScreen
 #          │                 Screen Manager                 │
 #          ╰────────────────────────────────────────────────╯
 # Kivy uses a screen manager to manage pages in the application
+colors = [
+    "Red",
+    "Pink",
+    "Purple",
+    "DeepPurple",
+    "Indigo",
+    "Blue",
+    "LightBlue",
+    "Cyan",
+    "Teal",
+    "Green",
+    "LightGreen",
+    "Lime",
+    "Yellow",
+    "Amber",
+    "Orange",
+    "DeepOrange",
+    "Brown",
+    "Gray",
+    "BlueGray",
+]
+
+
 class BiogasControllerApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -87,34 +119,48 @@ class BiogasControllerApp(MDApp):
     @override
     def build(self):
         # Configure com
-        conn = config["Connection"]
-        filters = [x for x in conn["filters"].split(",")]
-        com: ComSuperClass = Com(
-            int(conn["baudrate"]) if conn["baudrate"] != None else 19200, filters
+        filters = [
+            x
+            for x in read_config(
+                "Connection",
+                "filters",
+                "USB-Serial Controller, Prolific USB-Serial Controller",
+            ).split(",")
+        ]
+
+        baudrate = int(
+            read_config("Connection", "baudrate", "19200", type_to_validate="int")
         )
-        if config["Dev"]["use_test_library"] == "True":
+
+        com: ComSuperClass = Com(
+            baudrate,
+            filters,
+        )
+
+        if str_to_bool(
+            read_config("Dev", "use_test_library", "False", type_to_validate="bool")
+        ):
             com = lib.test.com.Com(
-                int(config["Dev"]["fail_sim"]),
-                int(conn["baudrate"]) if conn["baudrate"] != None else 19200,
+                int(read_config("Dev", "fail_sim", "20", type_to_validate="int")),
+                baudrate,
                 filters,
             )
-        com.set_port_override(conn["baudrate"])
+        com.set_port_override(read_config("Connection", "port_override", "None"))
 
-        self.theme_cls.theme_style = (
-            "Dark" if config["UI"]["theme"] == None else config["UI"]["theme"]
+        self.theme_cls.theme_style = read_config(
+            "UI", "theme", "Dark", ["Dark", "Light"]
         )
         self.theme_cls.material_style = "M3"
-        self.theme_cls.primary_palette = (
-            "Green"
-            if config["UI"]["primary_color"] == None
-            else config["UI"]["primary_color"]
+        self.theme_cls.primary_palette = read_config(
+            "UI", "primary_color", "Green", colors
         )
-        self.theme_cls.accent_palette = (
-            "Lime"
-            if config["UI"]["accent_color"] == None
-            else config["UI"]["accent_color"]
+        self.theme_cls.accent_palette = read_config(
+            "UI", "accent_color", "Lime", colors
         )
         self.theme_cls.theme_style_switch_animation = False
+
+        if verbose:
+            print("\n", "-" * 20, "\n")
 
         self.icon = "./BiogasControllerAppLogo.png"
         self.title = "BiogasControllerApp-V3.1.0"
@@ -148,5 +194,6 @@ if __name__ == "__main__":
  => Initializing....
           """
     )
+    set_verbosity(verbose)
     BiogasControllerApp().run()
     print("\n => Exiting!")

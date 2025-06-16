@@ -20,15 +20,16 @@ class ProgramScreen(MDScreen):
         self._instructions = Instructions(com)
         self._decoder = Decoder()
 
+        # Configure Dialog
         self.connection_error_dialog = MDDialog(
             title="Connection",
             text="Failed to connect. Do you wish to retry?",
             buttons=[
                 MDFlatButton(
                     text="Cancel",
-                    on_release=lambda dt: self.connection_error_dialog.dismiss(),
+                    on_release=lambda _: self.connection_error_dialog.dismiss(),
                 ),
-                MDFlatButton(text="Retry", on_release=lambda dt: self._load()),
+                MDFlatButton(text="Retry", on_release=lambda _: self.load_config()),
             ],
         )
 
@@ -38,7 +39,7 @@ class ProgramScreen(MDScreen):
             buttons=[
                 MDFlatButton(
                     text="Ok",
-                    on_release=lambda dt: self.missing_fields_error_dialog.dismiss(),
+                    on_release=lambda _: self.missing_fields_error_dialog.dismiss(),
                 ),
             ],
         )
@@ -49,7 +50,7 @@ class ProgramScreen(MDScreen):
             buttons=[
                 MDFlatButton(
                     text="Ok",
-                    on_release=lambda dt: self.save_error_dialog.dismiss(),
+                    on_release=lambda _: self.save_error_dialog.dismiss(),
                 ),
             ],
         )
@@ -60,15 +61,16 @@ class ProgramScreen(MDScreen):
             buttons=[
                 MDFlatButton(
                     text="Ok",
-                    on_release=lambda dt: self.save_success_dialog.dismiss(),
+                    on_release=lambda _: self.save_success_dialog.dismiss(),
                 ),
             ],
         )
 
         super().__init__(**kw)
 
+    # Load the config (async to not freeze the UI)
     def load_config(self):
-        Clock.schedule_once(lambda dt: self._load())
+        Clock.schedule_once(lambda _: self._load())
 
     # Load the current configuration from the micro-controller
     def _load(self):
@@ -131,8 +133,11 @@ class ProgramScreen(MDScreen):
 
         return data
 
-    # Transmit the changed data to the micro-controller to reconfigure it
     def save(self):
+        Clock.schedule_once(lambda _: self._save())
+
+    # Transmit the changed data to the micro-controller to reconfigure it
+    def _save(self):
         self.ids.status.text = "Saving..."
         data = self._read_ui()
         if data == None:
@@ -140,14 +145,14 @@ class ProgramScreen(MDScreen):
         else:
             try:
                 self._instructions.change_config(data)
-            except Exception as e:
+            except:
                 self.save_error_dialog.open()
                 return
             self.save_success_dialog.open()
             self.ids.status.text = "Saved!"
             Clock.schedule_once(self.reset_update, 5)
 
-    def reset_update(self, dt):
+    def reset_update(self, _):
         self.ids.status.text = ""
 
     def validate_float(self, instance):

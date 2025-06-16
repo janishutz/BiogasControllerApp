@@ -2,7 +2,6 @@ from lib.com import ComSuperClass
 import lib.decoder
 import time
 
-# TODO: Load filters (for comport search)
 decoder = lib.decoder.Decoder()
 
 
@@ -35,12 +34,13 @@ class Instructions:
 
         # Only run for a limited amount of time
         while time.time() - start < 5:
-            # If the decoded ascii character is equal to the next expected character, move pointer right by one
-            # If not, jump back to start
-            data = decoder.decode_ascii(self._com.receive(1));
+            # Receive and decode a single byte and decode as ASCII
+            data = decoder.decode_ascii(self._com.receive(1))
             if data == sequence[pointer]:
+                # Increment the pointer (move to next element in the List)
                 pointer += 1
             else:
+                # Jump back to start
                 pointer = 0
 
             # If the pointer has reached the end of the sequence, return True, as now the hook was successful
@@ -58,16 +58,26 @@ class Instructions:
         # Wait to find a CR character (enter)
         char = decoder.decode_ascii(self._com.receive(1))
         while char != "\n":
+            # Check for timeout
             if time.time() - start > 3:
                 return False
+
+            # Set the next character by receiving and decoding it as ASCII
             char = decoder.decode_ascii(self._com.receive(1))
 
         # Store the position in the hooking process
         state = 0
         distance = 0
 
+        # While we haven't timed out and have not reached the last state execute
+        # The last state indicates that the sync was successful
         while time.time() - start < 5 and state < 3:
+            # Receive the next char and decode it as ASCII
             char = decoder.decode_ascii(self._com.receive(1))
+
+            # The character we look for when syncing is Space (ASCII char 32 (decimal))
+            # It is sent every 4 bits. If we have received 3 with the correct distance from
+            # the previous in a row, we are synced
             if char == " ":
                 if distance == 4:
                     state += 1
@@ -79,6 +89,7 @@ class Instructions:
                 else:
                     distance += 1
 
+        # Read 5 more bits to correctly sync up
         self._com.receive(5)
 
         return state == 3

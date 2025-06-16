@@ -4,6 +4,22 @@ import serial
 import struct
 import serial.tools.list_ports
 
+# The below class is abstract to have a consistent, targetable interface
+# for both the real connection module and the simulation module
+#
+# If you are unaware of what classes are, you can mostly ignore the ComSuperClass
+#
+# For the interested, a quick rundown of what the benefits of doing it this way is:
+# This class provides a way to have two wholly different implementations that have
+# the same function interface (i.e. all functions take the same arguments)
+#
+# Another benefit of having classes is that we can pass a single instance around to
+# various components and have one shared instance that all can modify, reducing some
+# overhead.
+#
+# The actual implementation of most functions (called methods in OOP) are implemented
+# in the Com class below.
+
 
 class ComSuperClass(ABC):
     def __init__(
@@ -52,6 +68,15 @@ class ComSuperClass(ABC):
         pass
 
 
+# ┌                                                ┐
+# │         Main Com Class Implementation          │
+# └                                                ┘
+# Below you can find what you were most likely looking for. This is the implementation of the communication with the microcontroller.
+# You may also be interested in the decoder.py and instructions.py file, as the decoding and the hooking / syncing process are
+# implemented there. It is recommended that you do NOT read the test/com.py file, as that one is only there for simulation purposes
+# and is much more complicated than this here, if you are not well versed with Python or are struggling with the basics
+
+
 class Com(ComSuperClass):
     def _connection_check(self) -> bool:
         if self._serial == None:
@@ -84,17 +109,30 @@ class Com(ComSuperClass):
         return ""
 
     def _open(self) -> bool:
+        """Open the connection. Internal function, not to be called directly
+
+        Returns:
+            Boolean indicates if connection was successful or not
+        """
+        # Get the com port the controller has connected to
         comport = self.get_comport()
 
         # Comport search returns empty string if search unsuccessful
         if comport == "":
+            # Try to generate a new Serial object with the configuration of this class
+            # self._baudrate contains the baud rate and defaults to 19200
             try:
                 self._serial = serial.Serial(comport, self._baudrate, timeout=5)
             except serial.SerialException as e:
+                # If an error occurs, catch it, handle it and store the error
+                # for the UI and return False to indicate failed connection
                 self._err = e
                 return False
+
+            # Connection succeeded, return True
             return True
         else:
+            # Haven't found a comport
             return False
 
     def connect(self) -> bool:
@@ -110,8 +148,13 @@ class Com(ComSuperClass):
                 pass
 
     def receive(self, byte_count: int) -> bytes:
-        """Recieve bytes from microcontroller over serial. Returns bytes. Might want to decode using functions from lib.tools"""
+        """Receive bytes from microcontroller over serial. Returns bytes. Might want to decode using functions from lib.decoder"""
+        # Check connection
         self._connection_check()
+
+        # Ignore this boilerplate (extra code), the body of the if is the only thing important.
+        # The reason for the boilerplate is that the type checker will notice that self._serial can be
+        # None, thus showing errors.
         if self._serial != None:
             return self._serial.read(byte_count)
         else:
@@ -119,7 +162,12 @@ class Com(ComSuperClass):
 
     def send(self, msg: str) -> None:
         """Send a string over serial connection. Will open a connection if none is available"""
+        # Check connection
         self._connection_check()
+
+        # Ignore this boilerplate (extra code), the body of the if is the only thing important.
+        # The reason for the boilerplate is that the type checker will notice that self._serial can be
+        # None, thus showing errors.
         if self._serial != None:
             self._serial.write(msg.encode())
         else:
@@ -127,7 +175,12 @@ class Com(ComSuperClass):
 
     def send_float(self, msg: float) -> None:
         """Send a float number over serial connection"""
+        # Check connection
         self._connection_check()
+
+        # Ignore this boilerplate (extra code), the body of the if is the only thing important.
+        # The reason for the boilerplate is that the type checker will notice that self._serial can be
+        # None, thus showing errors.
         if self._serial != None:
             self._serial.write(bytearray(struct.pack(">f", msg))[0:3])
         else:

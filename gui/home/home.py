@@ -1,3 +1,4 @@
+from kivy.base import Clock
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
@@ -48,9 +49,7 @@ class HomeScreen(MDScreen):
                     text="Cancel",
                     on_release=lambda _: self.quit_dialog.dismiss(),
                 ),
-                MDFlatButton(
-                    text="Quit", on_release=lambda _: self._quit()
-                ),
+                MDFlatButton(text="Quit", on_release=lambda _: self._quit()),
             ],
         )
         super().__init__(**kw)
@@ -59,9 +58,12 @@ class HomeScreen(MDScreen):
         self._com.close()
         MDApp.get_running_app().stop()
 
+    def start(self):
+        Clock.schedule_once(lambda _: self._start())
+
     # Go to the main screen if we can establish connection or the check was disabled
     # in the configs
-    def start(self):
+    def _start(self):
         if self._com.connect():
             self.manager.current = "main"
             self.manager.transition.direction = "right"
@@ -93,7 +95,6 @@ class HomeScreen(MDScreen):
             information["Linux"][
                 "13"
             ] = f"Incorrect permissions at {port}. Resolve by running 'sudo chmod 777 {port}'"
-
 
             if port == "":
                 return information[operating_system]["NO_COM"]
