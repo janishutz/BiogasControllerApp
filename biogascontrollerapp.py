@@ -120,12 +120,12 @@ class BiogasControllerApp(MDApp):
     def build(self):
         # Configure com
         filters = [
-            x
+            x.strip()
             for x in read_config(
                 "Connection",
                 "filters",
-                "USB-Serial Controller, Prolific USB-Serial Controller",
-            ).split(",")
+                "USB-Serial Controller; Prolific USB-Serial Controller",
+            ).split(";")
         ]
 
         baudrate = int(
