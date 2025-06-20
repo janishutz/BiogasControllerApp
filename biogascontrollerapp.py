@@ -163,7 +163,7 @@ class BiogasControllerApp(MDApp):
             print("\n", "-" * 20, "\n")
 
         self.icon = "./BiogasControllerAppLogo.png"
-        self.title = "BiogasControllerApp-V3.1.0"
+        self.title = "BiogasControllerApp-V3.1.1"
         self.screen_manager.add_widget(HomeScreen(com, name="home"))
         self.screen_manager.add_widget(MainScreen(com, name="main"))
         self.screen_manager.add_widget(ProgramScreen(com, name="program"))
@@ -189,7 +189,7 @@ if __name__ == "__main__":
 ━━━━━━━━━━━┏━┛┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃┃━━┃┃━━
 ━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┗┛━━┗┛━━
 
-                            Version 3.1.0
+                            Version 3.1.1
 
  => Initializing....
           """

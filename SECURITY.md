@@ -9,7 +9,7 @@ Only Version 3.1 and later are supported due to the poor code quality of V2.3.0 
 | Version | Supported          |
 | ------- | ------------------ |
 | 3.1.X   | ✅                 |
-| 3.0.X   | ✅                 |
+| 3.0.X   | ❎                 |
 | 2.3.0   | ❎                 |
 | 2.2.0   | ❎                 |
 | 2.1.0   | ❎                 |
