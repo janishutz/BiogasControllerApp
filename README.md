@@ -26,7 +26,7 @@
 
 BiogasControllerApp has just received a major rewrite, where I focused on code-readability, documentation and stability. The documentation in the code is aimed at beginners and does contain some unnecessary extra comments
 
-If you are here to read the code, the files you are most likely looking for can be found in the `lib` folder. If you want to understand and have a look at all of the application, start with the `biogascontrollerapp.py` file
+***If you are here to read the code, the files you are most likely looking for can be found in the `util` folder. If you want to understand and have a look at all of the application, start with the `biogascontrollerapp.py` file***
 
 # Installation
 To install it, navigate to the releases tab on the right hand side. Click the current release, scroll down to assets and select the version appropriate for your operating system.

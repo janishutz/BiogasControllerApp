@@ -10,9 +10,9 @@ import queue
 import threading
 
 # Load utilities
-from lib.instructions import Instructions
-from lib.com import ComSuperClass
-from lib.decoder import Decoder
+from util.instructions import Instructions
+from util.interface import ControllerConnection
+from util.decoder import Decoder
 
 
 # TODO: Consider consolidating start and stop button
@@ -27,13 +27,13 @@ synced_queue: queue.Queue[List[str]] = queue.Queue()
 #          ╰────────────────────────────────────────────────╯
 # Using a Thread to run this in parallel to the UI to improve responsiveness
 class ReaderThread(threading.Thread):
-    _com: ComSuperClass
+    _com: ControllerConnection
     _decoder: Decoder
     _instructions: Instructions
 
     # This method allows the user to set Com object to be used.
     # The point of this is to allow for the use of a single Com object to not waste resources
-    def set_com(self, com: ComSuperClass):
+    def set_com(self, com: ControllerConnection):
         """Set the Com object to be used in this
 
         Args:
@@ -106,7 +106,7 @@ class MainScreen(MDScreen):
 
     # The constructor if this class takes a Com object to share one between all screens
     # to preserve resources and make handling better
-    def __init__(self, com: ComSuperClass, **kw):
+    def __init__(self, com: ControllerConnection, **kw):
         # Set some variables
         self._com = com
         self._event = None

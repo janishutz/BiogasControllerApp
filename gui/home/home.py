@@ -4,8 +4,9 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
-from lib.com import ComSuperClass
 import platform
+
+from util.interface import ControllerConnection
 
 
 # Information for errors encountered when using pyserial
@@ -25,7 +26,7 @@ information = {
 
 # This is the launch screen, i.e. what you see when you start up the app
 class HomeScreen(MDScreen):
-    def __init__(self, com: ComSuperClass, **kw):
+    def __init__(self, com: ControllerConnection, **kw):
         self._com = com
         self.connection_error_dialog = MDDialog(
             title="Connection",

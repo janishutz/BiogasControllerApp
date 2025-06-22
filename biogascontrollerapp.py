@@ -4,7 +4,11 @@
 #          ╰────────────────────────────────────────────────╯
 #
 # So you would like to read the source code? Nice!
-# Just be warned, this application uses Thread and a UI Toolkit called
+# 
+# If you simply want to know how the connection stuff works, then head to
+# the util/ folder and check out the com.py file!
+#
+# Just be warned, this application uses Threads and a UI Toolkit called
 # Kivy to run. If you are unsure of what functions do, consider
 # checking out the kivy docs at https://kivy.org/doc.
 # It also uses the pyserial library for communication with the micro-
@@ -12,9 +16,27 @@
 #
 # ────────────────────────────────────────────────────────────────────
 
+# Print a welcome message
+print(
+    """
+┏━━┓━━━━━━━━━━━━━━━━━━━━┏━━━┓━━━━━━━━━┏┓━━━━━━━━┏┓━┏┓━━━━━━━━┏━━━┓━━━━━━━━
+┃┏┓┃━━━━━━━━━━━━━━━━━━━━┃┏━┓┃━━━━━━━━┏┛┗┓━━━━━━━┃┃━┃┃━━━━━━━━┃┏━┓┃━━━━━━━━
+┃┗┛┗┓┏┓┏━━┓┏━━┓┏━━┓━┏━━┓┃┃━┗┛┏━━┓┏━┓━┗┓┏┛┏━┓┏━━┓┃┃━┃┃━┏━━┓┏━┓┃┃━┃┃┏━━┓┏━━┓
+┃┏━┓┃┣┫┃┏┓┃┃┏┓┃┗━┓┃━┃━━┫┃┃━┏┓┃┏┓┃┃┏┓┓━┃┃━┃┏┛┃┏┓┃┃┃━┃┃━┃┏┓┃┃┏┛┃┗━┛┃┃┏┓┃┃┏┓┃
+┃┗━┛┃┃┃┃┗┛┃┃┗┛┃┃┗┛┗┓┣━━┃┃┗━┛┃┃┗┛┃┃┃┃┃━┃┗┓┃┃━┃┗┛┃┃┗┓┃┗┓┃┃━┫┃┃━┃┏━┓┃┃┗┛┃┃┗┛┃
+┗━━━┛┗┛┗━━┛┗━┓┃┗━━━┛┗━━┛┗━━━┛┗━━┛┗┛┗┛━┗━┛┗┛━┗━━┛┗━┛┗━┛┗━━┛┗┛━┗┛━┗┛┃┏━┛┃┏━┛
+━━━━━━━━━━━┏━┛┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃┃━━┃┃━━
+━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┗┛━━┗┛━━
+
+                            Version 3.2.0
+
+ => Initializing....
+          """
+)
+
 # Load the config file
 import time
-from lib.config import read_config, set_verbosity, str_to_bool
+from util.config import read_config, set_verbosity, str_to_bool
 
 verbose = str_to_bool(read_config("Dev", "verbose", "False", type_to_validate="bool"))
 verbose = verbose if verbose != None else False
@@ -50,8 +72,9 @@ if str_to_bool(
 import os
 from typing import override
 
-from lib.com import Com, ComSuperClass
-import lib.test.com
+from util.com import Com
+from util.interface import ControllerConnection
+import util.test.com
 
 
 # Load config and disable kivy log if necessary
@@ -132,7 +155,7 @@ class BiogasControllerApp(MDApp):
             read_config("Connection", "baudrate", "19200", type_to_validate="int")
         )
 
-        com: ComSuperClass = Com(
+        com: ControllerConnection = Com(
             baudrate,
             filters,
         )
@@ -140,7 +163,7 @@ class BiogasControllerApp(MDApp):
         if str_to_bool(
             read_config("Dev", "use_test_library", "False", type_to_validate="bool")
         ):
-            com = lib.test.com.Com(
+            com = util.test.com.Com(
                 int(read_config("Dev", "fail_sim", "20", type_to_validate="int")),
                 baudrate,
                 filters,
@@ -163,7 +186,7 @@ class BiogasControllerApp(MDApp):
             print("\n", "-" * 20, "\n")
 
         self.icon = "./BiogasControllerAppLogo.png"
-        self.title = "BiogasControllerApp-V3.1.1"
+        self.title = "BiogasControllerApp-V3.2.0"
         self.screen_manager.add_widget(HomeScreen(com, name="home"))
         self.screen_manager.add_widget(MainScreen(com, name="main"))
         self.screen_manager.add_widget(ProgramScreen(com, name="program"))
@@ -178,22 +201,8 @@ class BiogasControllerApp(MDApp):
 
 # Disallow this file to be imported
 if __name__ == "__main__":
-    print(
-        """
-┏━━┓━━━━━━━━━━━━━━━━━━━━┏━━━┓━━━━━━━━━┏┓━━━━━━━━┏┓━┏┓━━━━━━━━┏━━━┓━━━━━━━━
-┃┏┓┃━━━━━━━━━━━━━━━━━━━━┃┏━┓┃━━━━━━━━┏┛┗┓━━━━━━━┃┃━┃┃━━━━━━━━┃┏━┓┃━━━━━━━━
-┃┗┛┗┓┏┓┏━━┓┏━━┓┏━━┓━┏━━┓┃┃━┗┛┏━━┓┏━┓━┗┓┏┛┏━┓┏━━┓┃┃━┃┃━┏━━┓┏━┓┃┃━┃┃┏━━┓┏━━┓
-┃┏━┓┃┣┫┃┏┓┃┃┏┓┃┗━┓┃━┃━━┫┃┃━┏┓┃┏┓┃┃┏┓┓━┃┃━┃┏┛┃┏┓┃┃┃━┃┃━┃┏┓┃┃┏┛┃┗━┛┃┃┏┓┃┃┏┓┃
-┃┗━┛┃┃┃┃┗┛┃┃┗┛┃┃┗┛┗┓┣━━┃┃┗━┛┃┃┗┛┃┃┃┃┃━┃┗┓┃┃━┃┗┛┃┃┗┓┃┗┓┃┃━┫┃┃━┃┏━┓┃┃┗┛┃┃┗┛┃
-┗━━━┛┗┛┗━━┛┗━┓┃┗━━━┛┗━━┛┗━━━┛┗━━┛┗┛┗┛━┗━┛┗┛━┗━━┛┗━┛┗━┛┗━━┛┗┛━┗┛━┗┛┃┏━┛┃┏━┛
-━━━━━━━━━━━┏━┛┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃┃━━┃┃━━
-━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┗┛━━┗┛━━
-
-                            Version 3.1.1
-
- => Initializing....
-          """
-    )
     set_verbosity(verbose)
+
+    # Start the application
     BiogasControllerApp().run()
     print("\n => Exiting!")

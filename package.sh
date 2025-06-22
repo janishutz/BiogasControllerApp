@@ -14,7 +14,7 @@ fi
 
 # Build successful
 cp -r ./gui ./dist
-cp -r ./lib ./dist
+cp -r ./util ./dist
 cp ./biogascontrollerapp.py ./dist/
 cp ./BiogasControllerAppLogo.png ./dist/
 cp ./changelog ./dist/

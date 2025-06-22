@@ -3,14 +3,8 @@ Library to be used in standalone mode (without microcontroller, for testing func
 It simulates the behviour of an actual microcontroller being connected
 """
 
-from typing import List, Optional
-import queue
-import random
-import time
-import struct
 
-from lib.com import ComSuperClass
-
+# ────────────────────────────────────────────────────────────────────
 # ┌                                                ┐
 # │             Testing Module For Com             │
 # └                                                ┘
@@ -18,8 +12,49 @@ from lib.com import ComSuperClass
 # even without a microcontroller. It is not documented in a particularly
 # beginner-friendly way, nor is the code written with beginner-friendliness
 # in mind. It is the most complicated piece of code of the entire application
-
 # ────────────────────────────────────────────────────────────────────
+
+
+
+
+
+
+
+
+
+
+
+# Just be warned, more OOP concepts and less documentation can be found here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Code starts here
+# ────────────────────────────────────────────────────────────────────
+
+from typing import List, Optional, override
+import queue
+import random
+import time
+import struct
+
+from util.interface import ControllerConnection
 
 # All double __ prefixed properties and methods are not available in the actual impl
 
@@ -53,7 +88,7 @@ class SensorConfig:
         self.t = t
 
 
-class Com(ComSuperClass):
+class Com(ControllerConnection):
     def __init__(
         self, fail_sim: int, baudrate: int = 19200, filters: Optional[list[str]] = None
     ) -> None:
@@ -79,13 +114,11 @@ class Com(ComSuperClass):
         # Initially, we are in normal mode (which leads to slower data intervals)
         self.__mode = "NM"
 
-    def set_port_override(self, override: str) -> None:
-        """Set the port override, to disable port search"""
-        self._port_override = override
-
+    @override
     def get_comport(self) -> str:
         return "Sim" if self._port_override == "" else self._port_override
 
+    @override
     def connect(self) -> bool:
         # Randomly return false in 1 in fail_sim ish cases
         if random.randint(0, self.__fail_sim) == 0:
@@ -93,9 +126,11 @@ class Com(ComSuperClass):
             return False
         return True
 
+    @override
     def close(self) -> None:
         pass
 
+    @override
     def receive(self, byte_count: int) -> bytes:
         data = []
         # If queue is too short, refill it
@@ -116,6 +151,7 @@ class Com(ComSuperClass):
                 )
         return b"".join(data)
 
+    @override
     def send(self, msg: str) -> None:
         # Using LUT to reference
         readback = instruction_lut.get(msg)
@@ -143,6 +179,7 @@ class Com(ComSuperClass):
             self.__add_float_as_hex(self.__config[i].t)
             self.__add_ascii_char("\n")
 
+    @override
     def send_float(self, msg: float) -> None:
         if self.__reconf_step == 0:
             self.__config[self.__reconf_sensor].a = msg

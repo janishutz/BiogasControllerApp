@@ -1,3 +1,5 @@
+# This library is used to validate the config file
+
 import configparser
 from typing import List
 
@@ -12,6 +14,7 @@ global is_verbose
 is_verbose = True
 
 
+# Set the verbosity if needed
 def set_verbosity(verbose: bool):
     global is_verbose
     is_verbose = verbose

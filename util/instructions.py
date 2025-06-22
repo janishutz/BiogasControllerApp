@@ -1,14 +1,15 @@
-from lib.com import ComSuperClass
-import lib.decoder
+import util.decoder
 import time
 
-decoder = lib.decoder.Decoder()
+from util.interface import ControllerConnection
+
+decoder = util.decoder.Decoder()
 
 
 # Class that supports sending instructions to the microcontroller,
 # as well as hooking to data stream according to protocol
 class Instructions:
-    def __init__(self, com: ComSuperClass) -> None:
+    def __init__(self, com: ControllerConnection) -> None:
         self._com = com
 
     # Helper method to hook to the data stream according to protocol.

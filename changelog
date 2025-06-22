@@ -1,4 +1,9 @@
 ***CHANGELOG***
+V3.2.0
+- Fixed a bug with comport assignment
+- Refactored some naming
+- Added more comments
+
 V3.1.0
 - Completely redesigned User Interface using KivyMD
 - Added config option for themes

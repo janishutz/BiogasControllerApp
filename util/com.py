@@ -1,71 +1,9 @@
-from abc import ABC, abstractmethod
-from typing import Optional
+from typing import override
 import serial
 import struct
 import serial.tools.list_ports
 
-# The below class is abstract to have a consistent, targetable interface
-# for both the real connection module and the simulation module
-#
-# If you are unaware of what classes are, you can mostly ignore the ComSuperClass
-#
-# For the interested, a quick rundown of what the benefits of doing it this way is:
-# This class provides a way to have two wholly different implementations that have
-# the same function interface (i.e. all functions take the same arguments)
-#
-# Another benefit of having classes is that we can pass a single instance around to
-# various components and have one shared instance that all can modify, reducing some
-# overhead.
-#
-# The actual implementation of most functions (called methods in OOP) are implemented
-# in the Com class below.
-
-
-class ComSuperClass(ABC):
-    def __init__(
-        self, baudrate: Optional[int] = 19200, filters: Optional[list[str]] = None
-    ) -> None:
-        self._serial: Optional[serial.Serial] = None
-        self._filters = (
-            filters
-            if filters != None
-            else ["USB-Serial Controller", "Prolific USB-Serial Controller"]
-        )
-        self._port_override = ""
-        self._baudrate = baudrate if baudrate != None else 19200
-        self._err = None
-
-    def set_port_override(self, override: str) -> None:
-        """Set the port override, to disable port search"""
-        if override != "" and override != "None":
-            self._port_override = override
-
-    def get_error(self) -> serial.SerialException | None:
-        return self._err
-
-    @abstractmethod
-    def get_comport(self) -> str:
-        pass
-
-    @abstractmethod
-    def connect(self) -> bool:
-        pass
-
-    @abstractmethod
-    def close(self) -> None:
-        pass
-
-    @abstractmethod
-    def receive(self, byte_count: int) -> bytes:
-        pass
-
-    @abstractmethod
-    def send(self, msg: str) -> None:
-        pass
-
-    @abstractmethod
-    def send_float(self, msg: float) -> None:
-        pass
+from util.interface import ControllerConnection
 
 
 # ┌                                                ┐
@@ -76,8 +14,13 @@ class ComSuperClass(ABC):
 # implemented there. It is recommended that you do NOT read the test/com.py file, as that one is only there for simulation purposes
 # and is much more complicated than this here, if you are not well versed with Python or are struggling with the basics
 
+# All variables starting in self are bound to the object and can be changed by any consumer of this library. The Com class
+# inherits from the ControllerConnection class (found in interface.py), which implements some of the methods (functions)
+# this class exposes, namely the constructor, set_port_override and get_error. They are not further relevant for the code below
+# though, so you can safely ignore it.
 
-class Com(ComSuperClass):
+
+class Com(ControllerConnection):
     def _connection_check(self) -> bool:
         if self._serial == None:
             return self._open()
@@ -88,6 +31,7 @@ class Com(ComSuperClass):
         else:
             return False
 
+    @override
     def get_comport(self) -> str:
         """Find the comport the microcontroller has attached to"""
         if self._port_override != "":
@@ -109,7 +53,7 @@ class Com(ComSuperClass):
         return ""
 
     def _open(self) -> bool:
-        """Open the connection. Internal function, not to be called directly
+        """Open the connection. Internal function, not to be called directly, use connect instead
 
         Returns:
             Boolean indicates if connection was successful or not
@@ -118,7 +62,7 @@ class Com(ComSuperClass):
         comport = self.get_comport()
 
         # Comport search returns empty string if search unsuccessful
-        if comport == "":
+        if comport != "":
             # Try to generate a new Serial object with the configuration of this class
             # self._baudrate contains the baud rate and defaults to 19200
             try:
@@ -135,10 +79,12 @@ class Com(ComSuperClass):
             # Haven't found a comport
             return False
 
+    @override
     def connect(self) -> bool:
         """Try to find a comport and connect to the microcontroller. Returns the success as a boolean"""
         return self._connection_check()
 
+    @override
     def close(self) -> None:
         """Close the serial connection, if possible"""
         if self._serial != None:
@@ -147,6 +93,7 @@ class Com(ComSuperClass):
             except:
                 pass
 
+    @override
     def receive(self, byte_count: int) -> bytes:
         """Receive bytes from microcontroller over serial. Returns bytes. Might want to decode using functions from lib.decoder"""
         # Check connection
@@ -160,6 +107,7 @@ class Com(ComSuperClass):
         else:
             raise Exception("ERR_CONNECTING")
 
+    @override
     def send(self, msg: str) -> None:
         """Send a string over serial connection. Will open a connection if none is available"""
         # Check connection
@@ -173,6 +121,7 @@ class Com(ComSuperClass):
         else:
             raise Exception("ERR_CONNECTING")
 
+    @override
     def send_float(self, msg: float) -> None:
         """Send a float number over serial connection"""
         # Check connection

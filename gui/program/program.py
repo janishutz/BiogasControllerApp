@@ -1,11 +1,11 @@
 from typing import List
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
-from lib.decoder import Decoder
-from lib.instructions import Instructions
+from util.decoder import Decoder
+from util.instructions import Instructions
+from util.instructions import ControllerConnection
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from lib.com import ComSuperClass
 from kivy.clock import Clock
 
 
@@ -15,7 +15,7 @@ name_map = ["a", "b", "c", "t"]
 
 
 class ProgramScreen(MDScreen):
-    def __init__(self, com: ComSuperClass, **kw):
+    def __init__(self, com: ControllerConnection, **kw):
         self._com = com
         self._instructions = Instructions(com)
         self._decoder = Decoder()
