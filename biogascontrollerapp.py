@@ -4,7 +4,7 @@
 #          ╰────────────────────────────────────────────────╯
 #
 # So you would like to read the source code? Nice!
-# 
+#
 # If you simply want to know how the connection stuff works, then head to
 # the util/ folder and check out the com.py file!
 #
@@ -28,7 +28,7 @@ print(
 ━━━━━━━━━━━┏━┛┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃┃━━┃┃━━
 ━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┗┛━━┗┛━━
 
-                            Version 3.2.0
+                            Version 3.2.1
 
  => Initializing....
           """
@@ -186,7 +186,7 @@ class BiogasControllerApp(MDApp):
             print("\n", "-" * 20, "\n")
 
         self.icon = "./BiogasControllerAppLogo.png"
-        self.title = "BiogasControllerApp-V3.2.0"
+        self.title = "BiogasControllerApp-V3.2.1"
         self.screen_manager.add_widget(HomeScreen(com, name="home"))
         self.screen_manager.add_widget(MainScreen(com, name="main"))
         self.screen_manager.add_widget(ProgramScreen(com, name="program"))
@@ -204,5 +204,11 @@ if __name__ == "__main__":
     set_verbosity(verbose)
 
     # Start the application
-    BiogasControllerApp().run()
+    try:
+        BiogasControllerApp().run()
+    except Exception as e:
+        print("Failed to run BiogasControllerApp!")
+        if verbose:
+            print(e)
+        time.sleep(5)
     print("\n => Exiting!")

@@ -1,4 +1,7 @@
 ***CHANGELOG***
+V3.2.1
+- Fix issue with Windows distributable: kivymd not found
+
 V3.2.0
 - Fixed a bug with comport assignment
 - Refactored some naming
