@@ -28,7 +28,7 @@ print(
 ━━━━━━━━━━━┏━┛┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃┃━━┃┃━━
 ━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┗┛━━┗┛━━
 
-                            Version 3.2.1
+                            Version 3.2.2
 
  => Initializing....
           """
@@ -36,6 +36,9 @@ print(
 
 # Load the config file
 import time
+import sys
+
+from kivy.resources import resource_add_path
 from util.config import read_config, set_verbosity, str_to_bool
 
 verbose = str_to_bool(read_config("Dev", "verbose", "False", type_to_validate="bool"))
@@ -186,7 +189,7 @@ class BiogasControllerApp(MDApp):
             print("\n", "-" * 20, "\n")
 
         self.icon = "./BiogasControllerAppLogo.png"
-        self.title = "BiogasControllerApp-V3.2.1"
+        self.title = "BiogasControllerApp-V3.2.2"
         self.screen_manager.add_widget(HomeScreen(com, name="home"))
         self.screen_manager.add_widget(MainScreen(com, name="main"))
         self.screen_manager.add_widget(ProgramScreen(com, name="program"))
@@ -205,10 +208,12 @@ if __name__ == "__main__":
 
     # Start the application
     try:
+        if hasattr(sys, '_MEIPASS'):
+            resource_add_path(os.path.join(sys._MEIPASS))
         BiogasControllerApp().run()
     except Exception as e:
         print("Failed to run BiogasControllerApp!")
         if verbose:
             print(e)
-        time.sleep(5)
+        input("Press enter to continue.")
     print("\n => Exiting!")

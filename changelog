@@ -1,4 +1,7 @@
 ***CHANGELOG***
+V3.2.2
+- Fix issues with Windows distributable: kivymd build
+
 V3.2.1
 - Fix issue with Windows distributable: kivymd not found
 

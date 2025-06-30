@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 from kivy_deps import sdl2, glew
+from kivymd import hooks_path as kivymd_hooks_path
 
 block_cipher = None
 
@@ -10,7 +11,7 @@ a = Analysis(
     binaries=[],
     datas=[],
     hiddenimports=[],
-    hookspath=[],
+    hookspath=[kivymd_hooks_path],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
