@@ -249,7 +249,7 @@ class Com(ControllerConnection):
     def __add_integer_as_hex(self, c: int):
         """Writes the hexadecimal representation of the high and low bytes of integer `c` (16-bit) to the simulated serial port."""
         if not (0 <= c <= 0xFFFF):
-            raise ValueError("Input must be a 16-bit integer (0–65535)")
+            raise ValueError("Input must be a 16-bit integer (0-65535)")
 
         # Get high byte (most significant byte)
         hi_byte = (c >> 8) & 0xFF
