@@ -208,7 +208,7 @@ if __name__ == "__main__":
 
     # Start the application
     try:
-        if hasattr(sys, '_MEIPASS'):
+        if hasattr(sys, "_MEIPASS"):
             resource_add_path(os.path.join(sys._MEIPASS))
         BiogasControllerApp().run()
     except Exception as e:

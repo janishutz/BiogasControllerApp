@@ -47,11 +47,12 @@ def read_config(
         key_0: The first key (top level)
         key_1: The second key (where the actual key-value pair is)
         default: The default value to return if the check fails
-        valid_entries: [Optiona] The entries that are valid ones to check against
+        valid_entries: [Optional] The entries that are valid ones to check against
         type_to_validate: [Optional] Data type to validate
 
     Returns:
-        [TODO:return]
+        The read config option as a string. You can cast this to the type you specified with type_to_validate safely.
+        When converting to a boolean though, use the str_to_bool function provided by this library
     """
     # Try loading the keys
     tmp = {}
